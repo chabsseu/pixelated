@@ -1,10 +1,11 @@
 extends Node
 class_name PixelateUtil
 
-## Loads an image from disk.
+
 static func load_image_from_path(path: String) -> Image:
-	var img := Image.new()
-	var err := img.load(path)
+	var img: Image = Image.new()
+	var err: int = img.load(path)
+
 	if err != OK:
 		push_error("Failed to load image at %s (error %d)" % [path, err])
 		return null
@@ -13,74 +14,70 @@ static func load_image_from_path(path: String) -> Image:
 	return img
 
 
-## Pixelates an image.
-## pixel_size:
-##     4  = very detailed
-##     8  = recommended
-##     12 = retro
-##     16 = chunky
-##
-## color_levels:
-##     255 = keep original colors
-##     64  = light reduction
-##     32  = SNES style
-##     16  = retro
-##      4  = GameBoy
 static func pixelate(source: Image, pixel_size: int, color_levels: int = 255) -> Image:
+
 	var width: int = source.get_width()
 	var height: int = source.get_height()
 
-	# Crop to a centered square
-	var side: int = min(width, height)
+	var side: int = mini(width, height)
 
-	var crop_x: int = int((width - side) / 2)
-	var crop_y: int = int((height - side) / 2)
+	var crop_x: int = (width - side) / 2
+	var crop_y: int = (height - side) / 2
 
-	var cropped: Image = source.get_region(
+	var img: Image = source.get_region(
 		Rect2i(crop_x, crop_y, side, side)
 	)
 
-	# Prevent division by zero
-	pixel_size = max(pixel_size, 1)
+	# Improve the image before pixelating
+	img.adjust_bcs(1.15, 1.08, 1.05)
 
-	# Calculate the downscaled resolution
-	var target_size: int = max(8, int(side / pixel_size))
+	pixel_size = maxi(pixel_size, 1)
 
-	# Downscale
-	cropped.resize(
-		target_size,
-		target_size,
-		Image.INTERPOLATE_BILINEAR
+	var target: int = maxi(24, side / pixel_size)
+
+	img.resize(
+		target,
+		target,
+		Image.INTERPOLATE_LANCZOS
 	)
 
-	# Optional color reduction
 	if color_levels < 255:
-		_quantize(cropped, color_levels)
+		_quantize(img, color_levels)
 
-	# Upscale with crisp pixels
-	cropped.resize(
+	img.resize(
 		side,
 		side,
 		Image.INTERPOLATE_NEAREST
 	)
 
-	return cropped
+	return img
+
 
 static func _quantize(img: Image, levels: int) -> void:
-	levels = max(levels, 2)
+
+	levels = maxi(levels, 2)
 
 	var w: int = img.get_width()
 	var h: int = img.get_height()
 
 	var step: float = 255.0 / float(levels - 1)
 
-	for y in range(h):
-		for x in range(w):
+	for y: int in range(h):
+		for x: int in range(w):
+
 			var c: Color = img.get_pixel(x, y)
 
-			var r: float = round(c.r * 255.0 / step) * step / 255.0
-			var g: float = round(c.g * 255.0 / step) * step / 255.0
-			var b: float = round(c.b * 255.0 / step) * step / 255.0
+			var rf: float = c.r * 255.0
+			var gf: float = c.g * 255.0
+			var bf: float = c.b * 255.0
+
+			var r_step: int = int(round(rf / step))
+			var g_step: int = int(round(gf / step))
+			var b_step: int = int(round(bf / step))
+
+			var r: float = float(r_step) * step / 255.0
+			var g: float = float(g_step) * step / 255.0
+			var b: float = float(b_step) * step / 255.0
 
 			img.set_pixel(
 				x,
@@ -90,15 +87,16 @@ static func _quantize(img: Image, levels: int) -> void:
 
 
 static func crop_to_square(image: Image) -> Image:
-	var side: int = min(
+
+	var side: int = mini(
 		image.get_width(),
 		image.get_height()
 	)
 
-	var x: int = int((image.get_width() - side) / 2)
-	var y: int = int((image.get_height() - side) / 2)
+	var x: int = (image.get_width() - side) / 2
+	var y: int = (image.get_height() - side) / 2
 
-	var square := Image.create(
+	var square: Image = Image.create(
 		side,
 		side,
 		false,

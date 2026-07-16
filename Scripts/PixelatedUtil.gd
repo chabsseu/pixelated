@@ -14,26 +14,13 @@ static func load_image_from_path(path: String) -> Image:
 	return img
 
 
-static func pixelate(source: Image, pixel_size: int, color_levels: int = 255) -> Image:
+static func pixelate(source: Image, pixel_size: int, color_levels: int = 32) -> Image:
+	var img := crop_to_square(source)
 
-	var width: int = source.get_width()
-	var height: int = source.get_height()
+	var side := img.get_width()
 
-	var side: int = mini(width, height)
-
-	var crop_x: int = (width - side) / 2
-	var crop_y: int = (height - side) / 2
-
-	var img: Image = source.get_region(
-		Rect2i(crop_x, crop_y, side, side)
-	)
-
-	# Improve the image before pixelating
-	img.adjust_bcs(1.15, 1.08, 1.05)
-
-	pixel_size = maxi(pixel_size, 1)
-
-	var target: int = maxi(24, side / pixel_size)
+	# Downscale
+	var target := clampi(side / pixel_size, 32, 128)
 
 	img.resize(
 		target,
@@ -41,8 +28,14 @@ static func pixelate(source: Image, pixel_size: int, color_levels: int = 255) ->
 		Image.INTERPOLATE_LANCZOS
 	)
 
-	if color_levels < 255:
-		_quantize(img, color_levels)
+	# Slight contrast
+	img.adjust_bcs(
+		1.25, # brightness
+		1.15, # contrast
+		0.95  # saturation
+	)
+
+	_quantize(img, color_levels)
 
 	img.resize(
 		side,
@@ -54,36 +47,18 @@ static func pixelate(source: Image, pixel_size: int, color_levels: int = 255) ->
 
 
 static func _quantize(img: Image, levels: int) -> void:
+	var step := 255.0 / float(levels - 1)
 
-	levels = maxi(levels, 2)
-
-	var w: int = img.get_width()
-	var h: int = img.get_height()
-
-	var step: float = 255.0 / float(levels - 1)
-
-	for y: int in range(h):
-		for x: int in range(w):
+	for y in range(img.get_height()):
+		for x in range(img.get_width()):
 
 			var c: Color = img.get_pixel(x, y)
 
-			var rf: float = c.r * 255.0
-			var gf: float = c.g * 255.0
-			var bf: float = c.b * 255.0
+			var r: float = round(c.r * 255.0 / step) * step / 255.0
+			var g: float = round(c.g * 255.0 / step) * step / 255.0
+			var b: float = round(c.b * 255.0 / step) * step / 255.0
 
-			var r_step: int = int(round(rf / step))
-			var g_step: int = int(round(gf / step))
-			var b_step: int = int(round(bf / step))
-
-			var r: float = float(r_step) * step / 255.0
-			var g: float = float(g_step) * step / 255.0
-			var b: float = float(b_step) * step / 255.0
-
-			img.set_pixel(
-				x,
-				y,
-				Color(r, g, b, c.a)
-			)
+			img.set_pixel(x, y, Color(r, g, b))
 
 
 static func crop_to_square(image: Image) -> Image:

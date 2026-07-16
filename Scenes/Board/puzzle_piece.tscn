@@ -1,8 +1,15 @@
 [gd_scene format=3 uid="uid://bcoyrinawxu8s"]
 
 [ext_resource type="Script" uid="uid://dwe7k04d2s0nc" path="res://Scripts/puzzle_piece.gd" id="1_3r1tw"]
+[ext_resource type="Shader" uid="uid://b6syytmcm8k1f" path="res://Scripts/Pixelate.gdshader" id="1_nfjcf"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nixp5"]
+shader = ExtResource("1_nfjcf")
+shader_parameter/pixel_size = 8
+shader_parameter/color_levels = 16
 
 [node name="PuzzlePiece" type="TextureRect" unique_id=1448856704]
+material = SubResource("ShaderMaterial_nixp5")
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_3r1tw")

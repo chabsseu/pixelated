@@ -18,7 +18,7 @@ signal puzzle_solved
 
 func _ready() -> void:
 	puzzle_solved.connect(_on_puzzle_solved)
-	start_puzzle("res://012099.JPG")
+	start_puzzle("res://test.jpg")
 func _on_puzzle_solved() -> void:
 	# Placeholder win screen — swap this out for real victory UI later
 	# (a proper popup, animation, sound, "next photo" button, etc.)

@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bcoyrinawxu8s"]
+
+[ext_resource type="Script" uid="uid://dwe7k04d2s0nc" path="res://Scripts/puzzle_piece.gd" id="1_3r1tw"]
+
+[node name="PuzzlePiece" type="TextureRect" unique_id=1448856704]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_3r1tw")

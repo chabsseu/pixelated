@@ -20,16 +20,38 @@ func _ready() -> void:
 	puzzle_solved.connect(_on_puzzle_solved)
 	start_puzzle("res://test.jpg")
 func _on_puzzle_solved() -> void:
-	# Placeholder win screen — swap this out for real victory UI later
-	# (a proper popup, animation, sound, "next photo" button, etc.)
 	var win_label := Label.new()
-	win_label.text = "YOU WIN!"
+
+	win_label.text = "PUZZLE COMPLETE!"
 	win_label.add_theme_font_size_override("font_size", 64)
+
 	win_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	win_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	win_label.set_anchors_preset(Control.PRESET_FULL_RECT)
+
+	win_label.modulate.a = 0.0
+	win_label.scale = Vector2(0.5, 0.5)
 	win_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	add_child(win_label)
+
+	var tween := create_tween()
+	tween.set_parallel(true)
+
+	tween.tween_property(
+		win_label,
+		"modulate:a",
+		1.0,
+		0.4
+	)
+
+	tween.tween_property(
+		win_label,
+		"scale",
+		Vector2.ONE,
+		0.4
+	)
+
 	print("Puzzle solved!")
 
 func start_puzzle(image_path: String) -> void:
@@ -96,7 +118,7 @@ func _build_pieces(processed_image: Image) -> void:
 		ghost.custom_minimum_size = Vector2(piece_px, piece_px)
 		ghost.size = Vector2(piece_px, piece_px)
 		ghost.position = slot_positions[i]
-		ghost.modulate = Color(1, 1, 1, 0.35)
+		ghost.modulate = Color(1, 1, 1, 0.08)
 		ghost.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 		add_child(ghost)
@@ -146,15 +168,49 @@ func _on_piece_dropped(piece: PuzzlePiece) -> void:
 	var target: Vector2 = slot_positions[piece.correct_index]
 	var snap_threshold := piece.piece_size * snap_threshold_ratio
 	var dist := piece.position.distance_to(target)
-	print("Piece %d dropped at %s | target %s | distance %s | threshold %s" % [piece.correct_index, piece.position, target, dist, snap_threshold])
+
+	print("Piece %d dropped at %s | target %s | distance %s | threshold %s" % [
+		piece.correct_index,
+		piece.position,
+		target,
+		dist,
+		snap_threshold
+	])
 
 	if dist <= snap_threshold:
 		piece.snap_to(target)
+
 		if not piece.is_locked:
+
 			piece.is_locked = true
+
+			# Fade out the ghost under this piece
+			if piece.correct_index < _ghost_nodes.size():
+				var ghost: TextureRect = _ghost_nodes[piece.correct_index]
+
+				var ghost_tween := create_tween()
+				ghost_tween.tween_property(
+					ghost,
+					"modulate:a",
+					0.0,
+					0.2
+				)
+
+			# Small pop animation
+			piece.scale = Vector2(1.1, 1.1)
+
+			var piece_tween := create_tween()
+			piece_tween.tween_property(
+				piece,
+				"scale",
+				Vector2.ONE,
+				0.12
+			)
+
 			pieces_correct += 1
+
 			if pieces_correct >= total_pieces:
-				emit_signal("puzzle_solved")
+				puzzle_solved.emit()
 
 func _clear_board() -> void:
 	for piece in pieces:

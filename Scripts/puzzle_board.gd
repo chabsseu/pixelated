@@ -4,8 +4,8 @@ class_name PuzzleBoard
 @export var piece_scene: PackedScene       # assign PuzzlePiece.tscn in the editor
 @export var grid_columns: int = 2
 @export var board_size: Vector2 = Vector2(600, 600)
-@export var pixelate_grid_size: int = 32   # lower = chunkier/harder pixelation
-@export var color_levels: int = 12         # lower = flatter "cartoon" palette, 255 = off
+@export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
+@export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
 
 var pieces: Array = []
@@ -18,7 +18,7 @@ signal puzzle_solved
 
 func _ready() -> void:
 	puzzle_solved.connect(_on_puzzle_solved)
-	start_puzzle("res://icon.svg")
+	start_puzzle("res://012099.JPG")
 func _on_puzzle_solved() -> void:
 	# Placeholder win screen — swap this out for real victory UI later
 	# (a proper popup, animation, sound, "next photo" button, etc.)
@@ -36,9 +36,24 @@ func start_puzzle(image_path: String) -> void:
 	var raw_img := PixelateUtil.load_image_from_path(image_path)
 	if raw_img == null:
 		return
-	var processed := PixelateUtil.pixelate(raw_img, pixelate_grid_size, color_levels)
-	_build_pieces(processed)
 
+	# Crop to square first
+	raw_img = PixelateUtil.crop_to_square(raw_img)
+
+	# Resize to the puzzle size
+	raw_img.resize(
+		int(board_size.x),
+		int(board_size.y),
+		Image.INTERPOLATE_LANCZOS
+	)
+
+	var processed := PixelateUtil.pixelate(
+		raw_img,
+		pixelate_grid_size,
+		color_levels
+	)
+
+	_build_pieces(processed)
 func _build_pieces(processed_image: Image) -> void:
 	_clear_board()
 

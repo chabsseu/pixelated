@@ -1,6 +1,6 @@
 # Pixel Puzzle
 
-A cozy pixel-art jigsaw puzzle game built with **Godot 4**.
+A cozy pixel-art jigsaw puzzle game built with **Godot**.
 
 Convert images into pixel art and solve them by dragging each piece back to its correct position. The game is designed to be simple, relaxing, and expandable with different puzzle sizes, difficulties, and game modes.
 You can upload your picture or any moment you capture with families, love ones, with dogs, or cats, or any animals
@@ -19,7 +19,7 @@ You can upload your picture or any moment you capture with families, love ones, 
 
 ## Built With
 
-* Godot 4
+* Godot
 * GDScript
 
 ---

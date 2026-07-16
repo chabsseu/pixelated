@@ -1,4 +1,4 @@
-# Pixel Puzzle
+# Pixelatedd
 
 A cozy pixel-art jigsaw puzzle game built with **Godot**.
 

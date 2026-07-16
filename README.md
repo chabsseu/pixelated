@@ -2,8 +2,7 @@
 
 A cozy pixel-art jigsaw puzzle game built with **Godot**.
 
-Convert images into pixel art and solve them by dragging each piece back to its correct position. The game is designed to be simple, relaxing, and expandable with different puzzle sizes, difficulties, and game modes.
-You can upload your picture or any moment you capture with families, love ones, with dogs, or cats, or any animals
+Pixel Puzzle is a cozy pixel-art jigsaw puzzle game built with Godot. Turn your favorite memories into relaxing puzzles by converting your own photos into pixel art. Whether it's a family photo, a moment with your partner, your dog, your cat, or a beautiful sunset, every puzzle becomes a personal memory you can piece back together.
 ---
 
 ## Features
@@ -65,26 +64,8 @@ You can upload your picture or any moment you capture with families, love ones, 
 
 ---
 
-## Installation
-
-1. Clone the repository
-
-```bash
-git clone https://github.com/yourusername/pixel-puzzle.git
-```
-
-2. Open the project using **Godot 4.x**.
-
-3. Press **F5** to run the game.
-
 ---
 
 ## Contributing
 
 Suggestions, bug reports, and pull requests are welcome.
-
----
-
-## License
-
-This project is licensed under the MIT License.

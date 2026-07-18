@@ -182,9 +182,15 @@ func _start_timer() -> void:
 	if _timer_label == null:
 		_timer_label = Label.new()
 		_timer_label.add_theme_font_size_override("font_size", 28)
-		_timer_label.position = Vector2(500,0)
+		_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		var label_width := 160.0
+		_timer_label.custom_minimum_size = Vector2(label_width, 40)
+		_timer_label.size = Vector2(label_width, 40)
+		_timer_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+		_timer_label.position = Vector2(-label_width / 2.0, 5)
 		add_child(_timer_label)
 	_timer_label.text = "Time: %d" % int(time_limit_seconds)
+
 
 func _on_time_up() -> void:
 	for piece in pieces:

@@ -7,6 +7,7 @@ var correct_index: int
 var correct_slot: Vector2
 var piece_size: float
 var is_locked: bool = false
+var input_locked: bool = false
 
 var _dragging: bool = false
 var _drag_offset: Vector2 = Vector2.ZERO
@@ -52,7 +53,7 @@ func setup(
 
 func _on_gui_input(event: InputEvent) -> void:
 
-	if is_locked:
+	if is_locked or input_locked:
 		return
 
 	if event is InputEventMouseButton:
@@ -74,3 +75,7 @@ func _on_gui_input(event: InputEvent) -> void:
 func snap_to(target_pos: Vector2) -> void:
 	position = target_pos
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+func lock_input():
+	input_locked = true
+	_dragging = false

@@ -2,24 +2,42 @@ extends Control
 class_name PuzzleBoard
 
 @export var piece_scene: PackedScene       # assign PuzzlePiece.tscn in the editor
-@export var grid_columns: int = 2
+@export var grid_columns: int = 3
 @export var board_size: Vector2 = Vector2(600, 600)
 @export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
 @export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
+@export var time_limit_seconds: float = 10.0
 
 var pieces: Array = []
 var slot_positions: Array = []
 var pieces_correct: int = 0
 var total_pieces: int = 0
 var _ghost_nodes: Array = []
+var _time_remaining: float = 0.0
+var _timer_active: bool = false
+var _timer_label: Label
 
 signal puzzle_solved
+signal time_up
 
 func _ready() -> void:
 	puzzle_solved.connect(_on_puzzle_solved)
 	start_puzzle("res://test.jpg")
+
+func _process(delta: float) -> void:
+	if not _timer_active:
+		return
+	_time_remaining -= delta
+	if _timer_label:
+		_timer_label.text = "Time: %d" % max(0, ceil(_time_remaining))
+	if _time_remaining <= 0.0:
+		_timer_active = false
+		_time_remaining = 0.0
+		_on_time_up()
+
 func _on_puzzle_solved() -> void:
+	_timer_active = false
 	var win_label := Label.new()
 
 	win_label.text = "PUZZLE COMPLETE!"
@@ -76,6 +94,7 @@ func start_puzzle(image_path: String) -> void:
 	)
 
 	_build_pieces(processed)
+
 func _build_pieces(processed_image: Image) -> void:
 	_clear_board()
 
@@ -153,6 +172,32 @@ func _build_pieces(processed_image: Image) -> void:
 
 	_shuffle_pieces()
 	queue_redraw()
+	_start_timer()
+
+func _start_timer() -> void:
+	if time_limit_seconds <= 0.0:
+		return
+	_time_remaining = time_limit_seconds
+	_timer_active = true
+	if _timer_label == null:
+		_timer_label = Label.new()
+		_timer_label.add_theme_font_size_override("font_size", 28)
+		_timer_label.position = Vector2(500,0)
+		add_child(_timer_label)
+	_timer_label.text = "Time: %d" % int(time_limit_seconds)
+
+func _on_time_up() -> void:
+	for piece in pieces:
+		piece.lock_input()
+	var msg := Label.new()
+	msg.text = "TIME'S UP!"
+	msg.add_theme_font_size_override("font_size", 64)
+	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	msg.set_anchors_preset(Control.PRESET_FULL_RECT)
+	msg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(msg)
+	time_up.emit()
 
 func _shuffle_pieces() -> void:
 	# Scatter pieces randomly within the board bounds, avoiding their own correct slot.

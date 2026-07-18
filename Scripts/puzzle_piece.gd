@@ -47,7 +47,7 @@ func setup(
 	correct_slot = slot
 	piece_size = size_px
 
-	mouse_filter = Control.MOUSE_FILTER_STOP
+	mouse_filter = Control.MOUSE_FILTER_PASS
 	gui_input.connect(_on_gui_input)
 
 

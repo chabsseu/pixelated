@@ -7,7 +7,7 @@ class_name PuzzleBoard
 @export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
 @export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
-@export var time_limit_seconds: float = 10.0
+@export var time_limit_seconds: float = 60.0
 
 var pieces: Array = []
 var slot_positions: Array = []
@@ -22,6 +22,7 @@ signal puzzle_solved
 signal time_up
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE   # let clicks pass through to the camera for panning
 	puzzle_solved.connect(_on_puzzle_solved)
 	start_puzzle("res://test.jpg")
 
@@ -190,7 +191,6 @@ func _start_timer() -> void:
 		_timer_label.position = Vector2(-label_width / 2.0, 5)
 		add_child(_timer_label)
 	_timer_label.text = "Time: %d" % int(time_limit_seconds)
-
 
 func _on_time_up() -> void:
 	for piece in pieces:

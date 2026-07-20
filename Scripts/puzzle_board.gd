@@ -24,7 +24,7 @@ signal time_up
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE   # let clicks pass through to the camera for panning
 	puzzle_solved.connect(_on_puzzle_solved)
-	start_puzzle("res://test.jpg")
+	start_puzzle("res://test1.jpg")
 
 func _process(delta: float) -> void:
 	if not _timer_active:
@@ -43,6 +43,9 @@ func _on_puzzle_solved() -> void:
 
 	win_label.text = "PUZZLE COMPLETE!"
 	win_label.add_theme_font_size_override("font_size", 64)
+	win_label.add_theme_color_override("font_color", Color.BLACK)
+	win_label.add_theme_color_override("font_outline_color", Color.WHITE)
+	win_label.add_theme_constant_override("outline_size", 6)
 
 	win_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	win_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
@@ -198,6 +201,9 @@ func _on_time_up() -> void:
 	var msg := Label.new()
 	msg.text = "TIME'S UP!"
 	msg.add_theme_font_size_override("font_size", 64)
+	msg.add_theme_color_override("font_color", Color.BLACK)
+	msg.add_theme_color_override("font_outline_color", Color.WHITE)
+	msg.add_theme_constant_override("outline_size", 6)
 	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	msg.set_anchors_preset(Control.PRESET_FULL_RECT)

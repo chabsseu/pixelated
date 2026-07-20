@@ -2,12 +2,14 @@ extends Control
 class_name PuzzleBoard
 
 @export var piece_scene: PackedScene       # assign PuzzlePiece.tscn in the editor
-@export var grid_columns: int = 3
+@export var grid_columns: int = 5
 @export var board_size: Vector2 = Vector2(600, 600)
 @export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
 @export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
 @export var time_limit_seconds: float = 60.0
+@export var time_bonus_per_piece: float = 1.0
+@export var points_per_piece: int = 5
 
 var pieces: Array = []
 var slot_positions: Array = []
@@ -17,6 +19,8 @@ var _ghost_nodes: Array = []
 var _time_remaining: float = 0.0
 var _timer_active: bool = false
 var _timer_label: Label
+var score: int = 0
+var _score_label: Label
 
 signal puzzle_solved
 signal time_up
@@ -24,7 +28,7 @@ signal time_up
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE   # let clicks pass through to the camera for panning
 	puzzle_solved.connect(_on_puzzle_solved)
-	start_puzzle("res://test1.jpg")
+	start_puzzle("res://test.jpg")
 
 func _process(delta: float) -> void:
 	if not _timer_active:
@@ -98,7 +102,27 @@ func start_puzzle(image_path: String) -> void:
 	)
 
 	_build_pieces(processed)
+	
+#Score
+func _ensure_score_label():
+	if _score_label != null:
+		return
 
+	_score_label = Label.new()
+	_score_label.add_theme_font_size_override("font_size", 28)
+	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	var label_width := 200.0
+	_score_label.custom_minimum_size = Vector2(label_width, 40)
+	_score_label.size = Vector2(label_width, 40)
+	_score_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	_score_label.position = Vector2(-label_width - 10, 5)
+	_score_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_score_label)  
+	_update_score_label()
+
+func _update_score_label():
+	if _score_label:
+		_score_label.text = "Score: %d" % score
 func _build_pieces(processed_image: Image) -> void:
 	_clear_board()
 
@@ -177,6 +201,7 @@ func _build_pieces(processed_image: Image) -> void:
 	_shuffle_pieces()
 	queue_redraw()
 	_start_timer()
+	_ensure_score_label()
 
 func _start_timer() -> void:
 	if time_limit_seconds <= 0.0:
@@ -265,9 +290,36 @@ func _on_piece_dropped(piece: PuzzlePiece) -> void:
 			)
 
 			pieces_correct += 1
+			score += points_per_piece
+			_update_score_label()
+			_spawn_score_popup(target, points_per_piece)
+
+			#Add time bonus for placing correct pieces
+			if _timer_active:
+				_time_remaining += time_bonus_per_piece
+				if _timer_label:
+					_timer_label.text = "Time: %d" % max (0, ceil(_time_remaining))
 
 			if pieces_correct >= total_pieces:
 				puzzle_solved.emit()
+
+#Popup points
+func _spawn_score_popup(at_position: Vector2, points: int):
+	var popup := Label.new()
+	popup.text = "+%d" % points
+	popup.add_theme_font_size_override("font_size", 24)
+	popup.add_theme_color_override("font_color", Color.BLACK)
+	popup.add_theme_color_override("font_outline_color", Color.WHITE)
+	popup.add_theme_constant_override("outline_size", 4)
+	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	popup.position = at_position
+	add_child(popup)
+
+	var popup_tween := create_tween()
+	popup_tween.set_parallel(true)
+	popup_tween.tween_property(popup, "position:y", at_position.y - 40, 0.6)
+	popup_tween.tween_property(popup, "modulate:a", 0.0, 0.6).set_delay(0.15)
+	popup_tween.chain().tween_callback(popup.queue_free)
 
 func _clear_board() -> void:
 	for piece in pieces:

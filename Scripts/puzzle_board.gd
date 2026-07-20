@@ -10,6 +10,7 @@ class_name PuzzleBoard
 @export var time_limit_seconds: float = 60.0
 @export var time_bonus_per_piece: float = 1.0
 @export var points_per_piece: int = 5
+@export var ui: PuzzleUI
 
 var pieces: Array = []
 var slot_positions: Array = []
@@ -18,24 +19,26 @@ var total_pieces: int = 0
 var _ghost_nodes: Array = []
 var _time_remaining: float = 0.0
 var _timer_active: bool = false
-var _timer_label: Label
 var score: int = 0
-var _score_label: Label
+
 
 signal puzzle_solved
 signal time_up
 
 func _ready() -> void:
-	mouse_filter = Control.MOUSE_FILTER_IGNORE   # let clicks pass through to the camera for panning
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	puzzle_solved.connect(_on_puzzle_solved)
-	start_puzzle("res://test.jpg")
+	call_deferred("start_puzzle", "res://test.jpg")
 
 func _process(delta: float) -> void:
 	if not _timer_active:
 		return
+
 	_time_remaining -= delta
-	if _timer_label:
-		_timer_label.text = "Time: %d" % max(0, ceil(_time_remaining))
+
+	if ui:
+		ui.set_time(_time_remaining)
+
 	if _time_remaining <= 0.0:
 		_timer_active = false
 		_time_remaining = 0.0
@@ -43,42 +46,8 @@ func _process(delta: float) -> void:
 
 func _on_puzzle_solved() -> void:
 	_timer_active = false
-	var win_label := Label.new()
-
-	win_label.text = "PUZZLE COMPLETE!"
-	win_label.add_theme_font_size_override("font_size", 64)
-	win_label.add_theme_color_override("font_color", Color.BLACK)
-	win_label.add_theme_color_override("font_outline_color", Color.WHITE)
-	win_label.add_theme_constant_override("outline_size", 6)
-
-	win_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	win_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	win_label.set_anchors_preset(Control.PRESET_FULL_RECT)
-
-	win_label.modulate.a = 0.0
-	win_label.scale = Vector2(0.5, 0.5)
-	win_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	add_child(win_label)
-
-	var tween := create_tween()
-	tween.set_parallel(true)
-
-	tween.tween_property(
-		win_label,
-		"modulate:a",
-		1.0,
-		0.4
-	)
-
-	tween.tween_property(
-		win_label,
-		"scale",
-		Vector2.ONE,
-		0.4
-	)
-
-	print("Puzzle solved!")
+	if ui:
+		ui.show_message("PUZZLE COMPLETE!")
 
 func start_puzzle(image_path: String) -> void:
 	var raw_img := PixelateUtil.load_image_from_path(image_path)
@@ -104,25 +73,25 @@ func start_puzzle(image_path: String) -> void:
 	_build_pieces(processed)
 	
 #Score
-func _ensure_score_label():
-	if _score_label != null:
-		return
+# func _ensure_score_label():
+# 	if _score_label != null:
+# 		return
 
-	_score_label = Label.new()
-	_score_label.add_theme_font_size_override("font_size", 28)
-	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	var label_width := 200.0
-	_score_label.custom_minimum_size = Vector2(label_width, 40)
-	_score_label.size = Vector2(label_width, 40)
-	_score_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-	_score_label.position = Vector2(-label_width - 10, 5)
-	_score_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(_score_label)  
-	_update_score_label()
+# 	_score_label = Label.new()
+# 	_score_label.add_theme_font_size_override("font_size", 28)
+# 	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+# 	var label_width := 200.0
+# 	_score_label.custom_minimum_size = Vector2(label_width, 40)
+# 	_score_label.size = Vector2(label_width, 40)
+# 	_score_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+# 	_score_label.position = Vector2(-label_width - 10, 5)
+# 	_score_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+# 	add_child(_score_label)  
+# 	_update_score_label()
 
-func _update_score_label():
-	if _score_label:
-		_score_label.text = "Score: %d" % score
+# func _update_score_label():
+# 	if _score_label:
+# 		_score_label.text = "Score: %d" % score
 func _build_pieces(processed_image: Image) -> void:
 	_clear_board()
 
@@ -201,50 +170,47 @@ func _build_pieces(processed_image: Image) -> void:
 	_shuffle_pieces()
 	queue_redraw()
 	_start_timer()
-	_ensure_score_label()
+	if ui:
+		ui.set_score(score)
 
 func _start_timer() -> void:
 	if time_limit_seconds <= 0.0:
 		return
+
 	_time_remaining = time_limit_seconds
 	_timer_active = true
-	if _timer_label == null:
-		_timer_label = Label.new()
-		_timer_label.add_theme_font_size_override("font_size", 28)
-		_timer_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		var label_width := 160.0
-		_timer_label.custom_minimum_size = Vector2(label_width, 40)
-		_timer_label.size = Vector2(label_width, 40)
-		_timer_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
-		_timer_label.position = Vector2(-label_width / 2.0, 5)
-		add_child(_timer_label)
-	_timer_label.text = "Time: %d" % int(time_limit_seconds)
+
+	if ui:
+		ui.set_time(_time_remaining)
 
 func _on_time_up() -> void:
 	for piece in pieces:
 		piece.lock_input()
-	var msg := Label.new()
-	msg.text = "TIME'S UP!"
-	msg.add_theme_font_size_override("font_size", 64)
-	msg.add_theme_color_override("font_color", Color.BLACK)
-	msg.add_theme_color_override("font_outline_color", Color.WHITE)
-	msg.add_theme_constant_override("outline_size", 6)
-	msg.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	msg.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	msg.set_anchors_preset(Control.PRESET_FULL_RECT)
-	msg.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(msg)
+
+	if ui:
+		ui.show_message("TIME'S UP!")
+
 	time_up.emit()
 
 func _shuffle_pieces() -> void:
-	# Scatter pieces randomly within the board bounds, avoiding their own correct slot.
-	var scatter_area := Vector2(board_size.x * 1.6, board_size.y * 1.1)
-	for piece in pieces:
-		var random_pos := Vector2(
-			randf_range(0, scatter_area.x - piece.piece_size),
-			randf_range(0, scatter_area.y - piece.piece_size)
-		)
-		piece.position = random_pos
+	var margin := 15.0
+	var board_offset := (size - board_size) / 2.0
+
+	var tray := []
+
+	for row in range(grid_columns):
+		for col in range(grid_columns):
+			tray.append(
+				Vector2(
+					board_offset.x + col * (board_size.x / grid_columns + margin),
+					board_offset.y + board_size.y + 40 + row * (board_size.y / grid_columns + margin)
+				)
+			)
+
+	tray.shuffle()
+
+	for i in range(pieces.size()):
+		pieces[i].position = tray[i]
 
 func _on_piece_dropped(piece: PuzzlePiece) -> void:
 	var target: Vector2 = slot_positions[piece.correct_index]
@@ -291,35 +257,36 @@ func _on_piece_dropped(piece: PuzzlePiece) -> void:
 
 			pieces_correct += 1
 			score += points_per_piece
-			_update_score_label()
-			_spawn_score_popup(target, points_per_piece)
+			if ui:
+				ui.set_score(score)
+			if ui:
+				ui.spawn_score_popup(target, points_per_piece)
 
 			#Add time bonus for placing correct pieces
 			if _timer_active:
 				_time_remaining += time_bonus_per_piece
-				if _timer_label:
-					_timer_label.text = "Time: %d" % max (0, ceil(_time_remaining))
-
+				if ui:
+					ui.set_time(_time_remaining)
 			if pieces_correct >= total_pieces:
 				puzzle_solved.emit()
 
 #Popup points
-func _spawn_score_popup(at_position: Vector2, points: int):
-	var popup := Label.new()
-	popup.text = "+%d" % points
-	popup.add_theme_font_size_override("font_size", 24)
-	popup.add_theme_color_override("font_color", Color.BLACK)
-	popup.add_theme_color_override("font_outline_color", Color.WHITE)
-	popup.add_theme_constant_override("outline_size", 4)
-	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	popup.position = at_position
-	add_child(popup)
+# func _spawn_score_popup(at_position: Vector2, points: int):
+# 	var popup := Label.new()
+# 	popup.text = "+%d" % points
+# 	popup.add_theme_font_size_override("font_size", 24)
+# 	popup.add_theme_color_override("font_color", Color.BLACK)
+# 	popup.add_theme_color_override("font_outline_color", Color.WHITE)
+# 	popup.add_theme_constant_override("outline_size", 4)
+# 	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
+# 	popup.position = at_position
+# 	add_child(popup)
 
-	var popup_tween := create_tween()
-	popup_tween.set_parallel(true)
-	popup_tween.tween_property(popup, "position:y", at_position.y - 40, 0.6)
-	popup_tween.tween_property(popup, "modulate:a", 0.0, 0.6).set_delay(0.15)
-	popup_tween.chain().tween_callback(popup.queue_free)
+# 	var popup_tween := create_tween()
+# 	popup_tween.set_parallel(true)
+# 	popup_tween.tween_property(popup, "position:y", at_position.y - 40, 0.6)
+# 	popup_tween.tween_property(popup, "modulate:a", 0.0, 0.6).set_delay(0.15)
+# 	popup_tween.chain().tween_callback(popup.queue_free)
 
 func _clear_board() -> void:
 	for piece in pieces:

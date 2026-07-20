@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://oacjwq2q1pw3"]
+
+[ext_resource type="Texture2D" uid="uid://bc6q6aswejtux" path="res://BG.jpg" id="1_qxrlw"]
+[ext_resource type="PackedScene" uid="uid://bm05urf7op16t" path="res://Scenes/Board/puzzle_board.tscn" id="2_wrm1d"]
+[ext_resource type="Script" uid="uid://crwccmy0benq0" path="res://Scripts/camera_2d.gd" id="4_3dryh"]
+[ext_resource type="PackedScene" uid="uid://c523ni5f52y28" path="res://Scenes/ui.tscn" id="4_wowpa"]
+
+[node name="Game" type="Node2D" unique_id=1535298601]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=374712614]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.0
+offset_top = -2.0
+offset_right = 1197.0
+offset_bottom = 673.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_qxrlw")
+stretch_mode = 6
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=652222034]
+position = Vector2(582, 323)
+script = ExtResource("4_3dryh")
+
+[node name="PuzzleBoard" parent="." unique_id=1656025751 node_paths=PackedStringArray("ui") instance=ExtResource("2_wrm1d")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 600.0
+offset_bottom = 600.0
+grow_horizontal = 1
+grow_vertical = 1
+ui = NodePath("../CanvasLayer/UI")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1031421463]
+
+[node name="UI" parent="CanvasLayer" unique_id=2000269233 instance=ExtResource("4_wowpa")]
+anchors_preset = 10
+anchor_bottom = 0.0
+grow_vertical = 1

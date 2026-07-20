@@ -2,15 +2,16 @@ extends Control
 class_name PuzzleBoard
 
 @export var piece_scene: PackedScene       # assign PuzzlePiece.tscn in the editor
-@export var grid_columns: int = 5
+@export var grid_columns: int = 2
 @export var board_size: Vector2 = Vector2(600, 600)
 @export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
 @export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
-@export var time_limit_seconds: float = 60.0
+@export var time_limit_seconds: float = 5.0
 @export var time_bonus_per_piece: float = 1.0
 @export var points_per_piece: int = 5
 @export var ui: PuzzleUI
+@export var message: MessageUI
 
 var pieces: Array = []
 var slot_positions: Array = []
@@ -46,8 +47,8 @@ func _process(delta: float) -> void:
 
 func _on_puzzle_solved() -> void:
 	_timer_active = false
-	if ui:
-		ui.show_message("PUZZLE COMPLETE!")
+	if message:
+		message.show_message("PUZZLE COMPLETE!")
 
 func start_puzzle(image_path: String) -> void:
 	var raw_img := PixelateUtil.load_image_from_path(image_path)
@@ -134,7 +135,7 @@ func _build_pieces(processed_image: Image) -> void:
 		ghost.custom_minimum_size = Vector2(piece_px, piece_px)
 		ghost.size = Vector2(piece_px, piece_px)
 		ghost.position = slot_positions[i]
-		ghost.modulate = Color(1, 1, 1, 0.08)
+		ghost.modulate = Color(1, 1, 1, 0.5)
 		ghost.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 		add_child(ghost)
@@ -187,8 +188,8 @@ func _on_time_up() -> void:
 	for piece in pieces:
 		piece.lock_input()
 
-	if ui:
-		ui.show_message("TIME'S UP!")
+	if message:
+		message.show_message("TIME'S UP!")
 
 	time_up.emit()
 

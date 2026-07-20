@@ -3,7 +3,6 @@ class_name PuzzleUI
 
 @onready var timer_label: Label = $TimerLabel
 @onready var score_label: Label = $ScoreLabel
-@onready var center_message: Label = $CenterMessage
 @onready var popup_layer: Control = $PopupLayer
 
 func set_time(seconds: float):
@@ -12,36 +11,6 @@ func set_time(seconds: float):
 
 func set_score(score: int):
 	score_label.text = "Score: %d" % score
-
-
-func show_message(text: String):
-
-	center_message.visible = true
-	center_message.text = text
-
-	center_message.modulate.a = 0
-	center_message.scale = Vector2(.5,.5)
-
-	var tween = create_tween()
-	tween.set_parallel(true)
-
-	tween.tween_property(
-		center_message,
-		"modulate:a",
-		1.0,
-		0.4
-	)
-
-	tween.tween_property(
-		center_message,
-		"scale",
-		Vector2.ONE,
-		0.4
-	)
-
-
-func hide_message():
-	center_message.visible = false
 
 
 func spawn_score_popup(pos: Vector2, points: int):

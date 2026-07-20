@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bm05urf7op16t" path="res://Scenes/Board/puzzle_board.tscn" id="2_wrm1d"]
 [ext_resource type="Script" uid="uid://crwccmy0benq0" path="res://Scripts/camera_2d.gd" id="4_3dryh"]
 [ext_resource type="PackedScene" uid="uid://c523ni5f52y28" path="res://Scenes/ui.tscn" id="4_wowpa"]
+[ext_resource type="PackedScene" uid="uid://b3438hwtyfdwu" path="res://Scenes/message.tscn" id="5_wowpa"]
 
 [node name="Game" type="Node2D" unique_id=1535298601]
 
@@ -11,10 +12,10 @@
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -3.0
-offset_top = -2.0
-offset_right = 1197.0
-offset_bottom = 673.0
+offset_left = -561.0
+offset_top = -333.0
+offset_right = 1725.0
+offset_bottom = 967.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -24,17 +25,23 @@ stretch_mode = 6
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=652222034]
 position = Vector2(582, 323)
+zoom = Vector2(0.5, 0.5)
 script = ExtResource("4_3dryh")
 
-[node name="PuzzleBoard" parent="." unique_id=1656025751 node_paths=PackedStringArray("ui") instance=ExtResource("2_wrm1d")]
+[node name="PuzzleBoard" parent="." unique_id=1656025751 node_paths=PackedStringArray("ui", "message") instance=ExtResource("2_wrm1d")]
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_right = 600.0
-offset_bottom = 600.0
+offset_left = -326.0
+offset_top = 33.5
+offset_right = 274.0
+offset_bottom = 633.5
 grow_horizontal = 1
 grow_vertical = 1
+grid_columns = 5
+board_size = Vector2(350, 350)
 ui = NodePath("../CanvasLayer/UI")
+message = NodePath("../CanvasLayer/Message")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1031421463]
 
@@ -42,3 +49,5 @@ ui = NodePath("../CanvasLayer/UI")
 anchors_preset = 10
 anchor_bottom = 0.0
 grow_vertical = 1
+
+[node name="Message" parent="CanvasLayer" unique_id=1466435013 instance=ExtResource("5_wowpa")]

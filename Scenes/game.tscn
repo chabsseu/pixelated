@@ -14,10 +14,10 @@ script = ExtResource("1_i6g32")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -561.0
-offset_top = -333.0
-offset_right = 1725.0
-offset_bottom = 967.0
+offset_left = -2180.0
+offset_top = -1581.0
+offset_right = 3344.0
+offset_bottom = 2215.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -27,7 +27,7 @@ stretch_mode = 6
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=652222034]
 position = Vector2(582, 323)
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.36, 0.36)
 script = ExtResource("4_3dryh")
 
 [node name="PuzzleBoard" parent="." unique_id=1656025751 node_paths=PackedStringArray("ui", "message") instance=ExtResource("2_wrm1d")]
@@ -41,7 +41,7 @@ offset_bottom = 633.5
 grow_horizontal = 1
 grow_vertical = 1
 grid_columns = 5
-board_size = Vector2(350, 350)
+board_size = Vector2(600, 600)
 ui = NodePath("../CanvasLayer/UI")
 message = NodePath("../CanvasLayer/Message")
 

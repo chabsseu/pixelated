@@ -2,7 +2,7 @@ extends Camera2D
 class_name ZoomCamera
 
 @export var zoom_step: float = 0.1        # how much each scroll notch changes zoom
-@export var min_zoom: float = 0.5         # smaller = allows zooming in further
+@export var min_zoom: float = 0.2         # smaller = allows zooming in further
 @export var max_zoom: float = 2.0         # larger = allows zooming out further
 @export var zoom_speed: float = 8.0       # higher = snappier zoom transition
 @export var pan_button: MouseButton = MOUSE_BUTTON_RIGHT

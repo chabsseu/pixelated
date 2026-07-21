@@ -29,8 +29,6 @@ signal time_up
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	puzzle_solved.connect(_on_puzzle_solved)
-	call_deferred("start_puzzle", "res://test.jpg")
-
 func _process(delta: float) -> void:
 	if not _timer_active:
 		return
@@ -51,6 +49,12 @@ func _on_puzzle_solved() -> void:
 		message.show_message("PUZZLE COMPLETE!")
 
 func start_puzzle(image_path: String) -> void:
+	score = 0
+	pieces_correct = 0
+
+	if ui:
+		ui.set_score(0)
+		
 	var raw_img := PixelateUtil.load_image_from_path(image_path)
 	if raw_img == null:
 		return

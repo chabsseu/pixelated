@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://c76tu1oyv2bnu"]
+
+[ext_resource type="Script" uid="uid://bgqkxjoah328p" path="res://Scripts/main_menu.gd" id="1_7sp8y"]
+
+[node name="Control" type="Control" unique_id=75564955]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+script = ExtResource("1_7sp8y")
+
+[node name="Panel" type="Panel" parent="." unique_id=1317047819]
+layout_mode = 0
+offset_left = 404.0
+offset_top = 15.0
+offset_right = 832.0
+offset_bottom = 576.0
+
+[node name="Title" type="Label" parent="Panel" unique_id=963750738]
+layout_mode = 0
+offset_left = 99.0
+offset_top = 37.0
+offset_right = 319.0
+offset_bottom = 117.0
+theme_override_font_sizes/font_size = 24
+text = "PIXELATEDD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="UploadButton" type="Button" parent="Panel" unique_id=249510416]
+layout_mode = 0
+offset_left = 152.0
+offset_top = 136.0
+offset_right = 264.0
+offset_bottom = 185.0
+theme_override_font_sizes/font_size = 20
+text = "Upload
+"
+
+[node name="FileDialog" type="FileDialog" parent="Panel" unique_id=2009852685]
+oversampling_override = 1.0
+
+[node name="OptionButton" type="OptionButton" parent="Panel" unique_id=252742273]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 252.0
+offset_right = 288.0
+offset_bottom = 306.0
+
+[node name="StartButton" type="Button" parent="Panel" unique_id=1932475073]
+layout_mode = 0
+offset_left = 156.0
+offset_top = 347.0
+offset_right = 268.0
+offset_bottom = 396.0
+theme_override_font_sizes/font_size = 20
+text = "Start
+"
+
+[node name="SelectedImageLabel" type="Label" parent="Panel" unique_id=1929420845]
+layout_mode = 0
+offset_left = 140.0
+offset_top = 196.0
+offset_right = 274.0
+offset_bottom = 238.0
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1

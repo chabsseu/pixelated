@@ -10,6 +10,8 @@ func _ready():
 	add_child(transition)
 
 	await transition.fade_in()
-	
+
 	puzzle_board.grid_columns = grid_size
 	puzzle_board.start_puzzle(image_path)
+
+	transition.queue_free()   # remove the transition overlay, not this whole scene

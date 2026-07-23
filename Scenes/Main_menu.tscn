@@ -1,18 +1,15 @@
 [gd_scene format=3 uid="uid://c76tu1oyv2bnu"]
 
 [ext_resource type="Script" uid="uid://bgqkxjoah328p" path="res://Scripts/main_menu.gd" id="1_7sp8y"]
+[ext_resource type="Texture2D" uid="uid://1madyepur20l" path="res://Assets/game_bg.jpg" id="2_72l6q"]
 [ext_resource type="Texture2D" uid="uid://bkilnqmot8r67" path="res://Assets/UI/Buttons/Start button/start_button.png" id="2_pc006"]
 [ext_resource type="Texture2D" uid="uid://bk8b0vvp623dv" path="res://Assets/UI/Buttons/upload_button.png" id="2_xwboo"]
-[ext_resource type="Texture2D" uid="uid://sk8dnkrc0tw8" path="res://Assets/UI/Buttons/panel_background.png" id="2_yst1x"]
 [ext_resource type="Texture2D" uid="uid://cv6ml8rryfpsl" path="res://Assets/UI/Buttons/Start button/start_button_press.png" id="3_787fc"]
 [ext_resource type="FontFile" uid="uid://col86otrh2jac" path="res://Minecraft.ttf" id="3_ehbya"]
 [ext_resource type="Texture2D" uid="uid://ddq4buvx6na56" path="res://Assets/UI/Buttons/upload_button_press.png" id="3_inwpd"]
 [ext_resource type="Texture2D" uid="uid://b6q1l8nhhpwnp" path="res://Assets/UI/Buttons/Start button/start_button_hover.png" id="4_ihofj"]
 [ext_resource type="Texture2D" uid="uid://bahkjeitnc1fn" path="res://Assets/UI/Buttons/upload_button_hover.png" id="4_yst1x"]
 [ext_resource type="Texture2D" uid="uid://bska685mkt81h" path="res://Assets/UI/Buttons/Start button/start_button_disable.png" id="5_ihofj"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ehbya"]
-texture = ExtResource("2_yst1x")
 
 [node name="Control" type="Control" unique_id=75564955]
 layout_mode = 3
@@ -22,13 +19,18 @@ offset_bottom = 40.0
 size_flags_horizontal = 4
 script = ExtResource("1_7sp8y")
 
+[node name="Background" type="TextureRect" parent="." unique_id=1624812951]
+layout_mode = 0
+offset_right = 1161.0
+offset_bottom = 650.0
+texture = ExtResource("2_72l6q")
+
 [node name="Panel" type="Panel" parent="." unique_id=1317047819]
 layout_mode = 0
 offset_left = 396.0
 offset_top = 32.0
 offset_right = 824.0
 offset_bottom = 593.0
-theme_override_styles/panel = SubResource("StyleBoxTexture_ehbya")
 
 [node name="Title" type="Label" parent="Panel" unique_id=963750738]
 layout_mode = 0
@@ -58,17 +60,17 @@ oversampling_override = 1.0
 
 [node name="OptionButton" type="OptionButton" parent="Panel" unique_id=252742273]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 308.0
-offset_right = 288.0
-offset_bottom = 362.0
+offset_left = 142.0
+offset_top = 367.0
+offset_right = 294.0
+offset_bottom = 421.0
 
 [node name="StartButton" type="TextureButton" parent="Panel" unique_id=1684923707]
 layout_mode = 0
-offset_left = 156.0
-offset_top = 403.0
-offset_right = 268.0
-offset_bottom = 452.0
+offset_left = 159.0
+offset_top = 443.0
+offset_right = 271.0
+offset_bottom = 492.0
 texture_normal = ExtResource("2_pc006")
 texture_pressed = ExtResource("3_787fc")
 texture_hover = ExtResource("4_ihofj")
@@ -83,5 +85,17 @@ offset_right = 281.0
 offset_bottom = 294.0
 theme_override_fonts/font = ExtResource("3_ehbya")
 theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoardLabel" type="Label" parent="Panel" unique_id=1823646556]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 326.0
+offset_right = 310.0
+offset_bottom = 368.0
+theme_override_fonts/font = ExtResource("3_ehbya")
+theme_override_font_sizes/font_size = 20
+text = "Choose Board Size"
 horizontal_alignment = 1
 vertical_alignment = 1

@@ -56,6 +56,10 @@ func _on_start_pressed():
 	if image_path.is_empty():
 		return
 
+	var transition = preload("res://Scenes/transition.tscn").instantiate()
+	add_child(transition)
+	await transition.fade_out()
+	
 	var game = GAME_SCENE.instantiate()
 
 	game.image_path = image_path

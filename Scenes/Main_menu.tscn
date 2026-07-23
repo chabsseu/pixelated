@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bk8b0vvp623dv" path="res://Assets/UI/Buttons/upload_button.png" id="2_xwboo"]
 [ext_resource type="Texture2D" uid="uid://sk8dnkrc0tw8" path="res://Assets/UI/Buttons/panel_background.png" id="2_yst1x"]
 [ext_resource type="Texture2D" uid="uid://cv6ml8rryfpsl" path="res://Assets/UI/Buttons/Start button/start_button_press.png" id="3_787fc"]
+[ext_resource type="FontFile" uid="uid://col86otrh2jac" path="res://Minecraft.ttf" id="3_ehbya"]
 [ext_resource type="Texture2D" uid="uid://ddq4buvx6na56" path="res://Assets/UI/Buttons/upload_button_press.png" id="3_inwpd"]
 [ext_resource type="Texture2D" uid="uid://b6q1l8nhhpwnp" path="res://Assets/UI/Buttons/Start button/start_button_hover.png" id="4_ihofj"]
 [ext_resource type="Texture2D" uid="uid://bahkjeitnc1fn" path="res://Assets/UI/Buttons/upload_button_hover.png" id="4_yst1x"]
@@ -31,12 +32,13 @@ theme_override_styles/panel = SubResource("StyleBoxTexture_ehbya")
 
 [node name="Title" type="Label" parent="Panel" unique_id=963750738]
 layout_mode = 0
-offset_left = 1.0
-offset_top = 77.0
-offset_right = 429.0
-offset_bottom = 111.0
+offset_left = 6.0
+offset_top = 91.0
+offset_right = 434.0
+offset_bottom = 125.0
+theme_override_fonts/font = ExtResource("3_ehbya")
 theme_override_font_sizes/font_size = 24
-text = "PIXELATEDD"
+text = "Upload Photo"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -79,6 +81,7 @@ offset_left = 147.0
 offset_top = 252.0
 offset_right = 281.0
 offset_bottom = 294.0
+theme_override_fonts/font = ExtResource("3_ehbya")
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 vertical_alignment = 1

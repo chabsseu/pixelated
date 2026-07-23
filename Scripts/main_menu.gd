@@ -2,8 +2,8 @@ extends Control
 
 const GAME_SCENE: PackedScene = preload("res://Scenes/game.tscn")
 
-@onready var upload_button: Button = $Panel/UploadButton
-@onready var start_button: Button = $Panel/StartButton
+@onready var upload_button: TextureButton = $Panel/UploadButton
+@onready var start_button: TextureButton = $Panel/StartButton
 @onready var option_button: OptionButton = $Panel/OptionButton
 @onready var file_dialog: FileDialog = $Panel/FileDialog
 @onready var selected_image: Label = $Panel/SelectedImageLabel

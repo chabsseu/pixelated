@@ -1,6 +1,13 @@
 [gd_scene format=3 uid="uid://c76tu1oyv2bnu"]
 
 [ext_resource type="Script" uid="uid://bgqkxjoah328p" path="res://Scripts/main_menu.gd" id="1_7sp8y"]
+[ext_resource type="Texture2D" uid="uid://bkilnqmot8r67" path="res://Assets/UI/Buttons/Start button/start_button.png" id="2_pc006"]
+[ext_resource type="Texture2D" uid="uid://bk8b0vvp623dv" path="res://Assets/UI/Buttons/upload_button.png" id="2_xwboo"]
+[ext_resource type="Texture2D" uid="uid://cv6ml8rryfpsl" path="res://Assets/UI/Buttons/Start button/start_button_press.png" id="3_787fc"]
+[ext_resource type="Texture2D" uid="uid://ddq4buvx6na56" path="res://Assets/UI/Buttons/upload_button_press.png" id="3_inwpd"]
+[ext_resource type="Texture2D" uid="uid://b6q1l8nhhpwnp" path="res://Assets/UI/Buttons/Start button/start_button_hover.png" id="4_ihofj"]
+[ext_resource type="Texture2D" uid="uid://bahkjeitnc1fn" path="res://Assets/UI/Buttons/upload_button_hover.png" id="4_yst1x"]
+[ext_resource type="Texture2D" uid="uid://bska685mkt81h" path="res://Assets/UI/Buttons/Start button/start_button_disable.png" id="5_ihofj"]
 
 [node name="Control" type="Control" unique_id=75564955]
 layout_mode = 3
@@ -28,15 +35,16 @@ text = "PIXELATEDD"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="UploadButton" type="Button" parent="Panel" unique_id=249510416]
+[node name="UploadButton" type="TextureButton" parent="Panel" unique_id=1035011981]
 layout_mode = 0
-offset_left = 152.0
-offset_top = 136.0
-offset_right = 264.0
-offset_bottom = 185.0
-theme_override_font_sizes/font_size = 20
-text = "Upload
-"
+offset_left = 162.0
+offset_top = 145.0
+offset_right = 265.0
+offset_bottom = 223.0
+texture_normal = ExtResource("2_xwboo")
+texture_pressed = ExtResource("3_inwpd")
+texture_hover = ExtResource("4_yst1x")
+stretch_mode = 0
 
 [node name="FileDialog" type="FileDialog" parent="Panel" unique_id=2009852685]
 oversampling_override = 1.0
@@ -44,26 +52,28 @@ oversampling_override = 1.0
 [node name="OptionButton" type="OptionButton" parent="Panel" unique_id=252742273]
 layout_mode = 0
 offset_left = 136.0
-offset_top = 252.0
+offset_top = 308.0
 offset_right = 288.0
-offset_bottom = 306.0
+offset_bottom = 362.0
 
-[node name="StartButton" type="Button" parent="Panel" unique_id=1932475073]
+[node name="StartButton" type="TextureButton" parent="Panel" unique_id=1684923707]
 layout_mode = 0
 offset_left = 156.0
-offset_top = 347.0
+offset_top = 403.0
 offset_right = 268.0
-offset_bottom = 396.0
-theme_override_font_sizes/font_size = 20
-text = "Start
-"
+offset_bottom = 452.0
+texture_normal = ExtResource("2_pc006")
+texture_pressed = ExtResource("3_787fc")
+texture_hover = ExtResource("4_ihofj")
+texture_disabled = ExtResource("5_ihofj")
+stretch_mode = 0
 
 [node name="SelectedImageLabel" type="Label" parent="Panel" unique_id=1929420845]
 layout_mode = 0
-offset_left = 140.0
-offset_top = 196.0
-offset_right = 274.0
-offset_bottom = 238.0
+offset_left = 147.0
+offset_top = 252.0
+offset_right = 281.0
+offset_bottom = 294.0
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
 vertical_alignment = 1

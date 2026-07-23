@@ -3,11 +3,15 @@
 [ext_resource type="Script" uid="uid://bgqkxjoah328p" path="res://Scripts/main_menu.gd" id="1_7sp8y"]
 [ext_resource type="Texture2D" uid="uid://bkilnqmot8r67" path="res://Assets/UI/Buttons/Start button/start_button.png" id="2_pc006"]
 [ext_resource type="Texture2D" uid="uid://bk8b0vvp623dv" path="res://Assets/UI/Buttons/upload_button.png" id="2_xwboo"]
+[ext_resource type="Texture2D" uid="uid://sk8dnkrc0tw8" path="res://Assets/UI/Buttons/panel_background.png" id="2_yst1x"]
 [ext_resource type="Texture2D" uid="uid://cv6ml8rryfpsl" path="res://Assets/UI/Buttons/Start button/start_button_press.png" id="3_787fc"]
 [ext_resource type="Texture2D" uid="uid://ddq4buvx6na56" path="res://Assets/UI/Buttons/upload_button_press.png" id="3_inwpd"]
 [ext_resource type="Texture2D" uid="uid://b6q1l8nhhpwnp" path="res://Assets/UI/Buttons/Start button/start_button_hover.png" id="4_ihofj"]
 [ext_resource type="Texture2D" uid="uid://bahkjeitnc1fn" path="res://Assets/UI/Buttons/upload_button_hover.png" id="4_yst1x"]
 [ext_resource type="Texture2D" uid="uid://bska685mkt81h" path="res://Assets/UI/Buttons/Start button/start_button_disable.png" id="5_ihofj"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ehbya"]
+texture = ExtResource("2_yst1x")
 
 [node name="Control" type="Control" unique_id=75564955]
 layout_mode = 3
@@ -19,17 +23,18 @@ script = ExtResource("1_7sp8y")
 
 [node name="Panel" type="Panel" parent="." unique_id=1317047819]
 layout_mode = 0
-offset_left = 404.0
-offset_top = 15.0
-offset_right = 832.0
-offset_bottom = 576.0
+offset_left = 396.0
+offset_top = 32.0
+offset_right = 824.0
+offset_bottom = 593.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_ehbya")
 
 [node name="Title" type="Label" parent="Panel" unique_id=963750738]
 layout_mode = 0
-offset_left = 99.0
-offset_top = 37.0
-offset_right = 319.0
-offset_bottom = 117.0
+offset_left = 1.0
+offset_top = 77.0
+offset_right = 429.0
+offset_bottom = 111.0
 theme_override_font_sizes/font_size = 24
 text = "PIXELATEDD"
 horizontal_alignment = 1

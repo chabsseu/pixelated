@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://iwa7rcwlrueu"]
+
+[sub_resource type="Curve" id="Curve_ghxob"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.9872881, -1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[node name="Snap_particle" type="CPUParticles2D" unique_id=574983923]
+amount = 50
+fixed_fps = 60
+emission_shape = 2
+emission_sphere_radius = 48.74
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_max = 75.4
+angular_velocity_min = -720.0
+angular_velocity_max = 720.0
+scale_amount_min = 0.0
+scale_amount_max = 25.0
+color = Color(0.79607844, 1, 1, 1)
+hue_variation_min = -1.0
+hue_variation_max = 1.0
+hue_variation_curve = SubResource("Curve_ghxob")

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://deg3vidy41u6e"
+path="res://.godot/imported/massobeats - peach prosecco (freetouse.com).mp3-95485901dfa96cb2e32a15567cea7d64.mp3str"
+
+[deps]
+
+source_file="res://Assets/Background Music/massobeats - peach prosecco (freetouse.com).mp3"
+dest_files=["res://.godot/imported/massobeats - peach prosecco (freetouse.com).mp3-95485901dfa96cb2e32a15567cea7d64.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

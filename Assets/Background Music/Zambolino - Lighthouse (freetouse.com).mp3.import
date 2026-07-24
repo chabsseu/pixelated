@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b3g24lnvwrafj"
+path="res://.godot/imported/Zambolino - Lighthouse (freetouse.com).mp3-f217a6dc7204b35d2b67c4a8abd95c6e.mp3str"
+
+[deps]
+
+source_file="res://Assets/Background Music/Zambolino - Lighthouse (freetouse.com).mp3"
+dest_files=["res://.godot/imported/Zambolino - Lighthouse (freetouse.com).mp3-f217a6dc7204b35d2b67c4a8abd95c6e.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -5,7 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://bm05urf7op16t" path="res://Scenes/Board/puzzle_board.tscn" id="2_wrm1d"]
 [ext_resource type="Script" uid="uid://crwccmy0benq0" path="res://Scripts/camera_2d.gd" id="4_3dryh"]
 [ext_resource type="PackedScene" uid="uid://c523ni5f52y28" path="res://Scenes/ui.tscn" id="4_wowpa"]
+[ext_resource type="PackedScene" uid="uid://iwa7rcwlrueu" path="res://Scenes/Board/snap_particle.tscn" id="5_v158k"]
 [ext_resource type="PackedScene" uid="uid://b3438hwtyfdwu" path="res://Scenes/message.tscn" id="5_wowpa"]
+[ext_resource type="AudioStream" uid="uid://b5s5r837dpk5c" path="res://Assets/Background Music/Piki - Fancy Park (freetouse.com).mp3" id="7_1l0tm"]
 
 [node name="Game" type="Node2D" unique_id=1535298601]
 script = ExtResource("1_i6g32")
@@ -44,6 +46,7 @@ grid_columns = 5
 board_size = Vector2(600, 600)
 ui = NodePath("../CanvasLayer/UI")
 message = NodePath("../CanvasLayer/Message")
+snap_particle_scene = ExtResource("5_v158k")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1031421463]
 
@@ -53,3 +56,6 @@ anchor_bottom = 0.0
 grow_vertical = 1
 
 [node name="Message" parent="CanvasLayer" unique_id=1466435013 instance=ExtResource("5_wowpa")]
+
+[node name="Bg_music" type="AudioStreamPlayer2D" parent="." unique_id=1335121854]
+stream = ExtResource("7_1l0tm")

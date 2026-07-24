@@ -1,15 +1,41 @@
 extends Node2D
+
 const game_screen: PackedScene = preload("res://Scenes/Main_menu.tscn")
+
+@export var click_particle_scene: PackedScene   # assign a CPUParticles2D scene here
 
 
 func _on_texture_button_pressed() -> void:
+	_spawn_click_particle()
+
 	var transition = preload("res://Scenes/transition.tscn").instantiate()
 	add_child(transition)
 	await transition.fade_out()
-	
+
 	var game_screen = game_screen.instantiate()
 
 	get_tree().root.add_child(game_screen)
 	get_tree().current_scene = game_screen
 
 	queue_free()
+
+
+func _spawn_click_particle() -> void:
+	if click_particle_scene == null:
+		push_warning("click_particle_scene not assigned — skipping particle spawn")
+		return
+
+	var particles := click_particle_scene.instantiate() as CPUParticles2D
+	if particles == null:
+		push_warning("click_particle_scene is not a CPUParticles2D!")
+		return
+
+	get_tree().current_scene.add_child(particles)
+	particles.global_position = get_viewport().get_mouse_position()
+
+	particles.restart()
+	particles.emitting = true
+
+	get_tree().create_timer(particles.lifetime + 0.2).timeout.connect(
+		particles.queue_free
+	)

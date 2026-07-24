@@ -12,6 +12,7 @@ class_name PuzzleBoard
 @export var points_per_piece: int = 5
 @export var ui: PuzzleUI
 @export var message: MessageUI
+@export var snap_particle_scene: PackedScene
 
 var pieces: Array = []
 var slot_positions: Array = []
@@ -29,6 +30,10 @@ signal time_up
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	puzzle_solved.connect(_on_puzzle_solved)
+
+	if snap_particle_scene == null:
+		push_warning("PuzzleBoard: snap_particle_scene is not assigned in the Inspector!")
+
 func _process(delta: float) -> void:
 	if not _timer_active:
 		return
@@ -76,27 +81,7 @@ func start_puzzle(image_path: String) -> void:
 	)
 
 	_build_pieces(processed)
-	
-#Score
-# func _ensure_score_label():
-# 	if _score_label != null:
-# 		return
 
-# 	_score_label = Label.new()
-# 	_score_label.add_theme_font_size_override("font_size", 28)
-# 	_score_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-# 	var label_width := 200.0
-# 	_score_label.custom_minimum_size = Vector2(label_width, 40)
-# 	_score_label.size = Vector2(label_width, 40)
-# 	_score_label.set_anchors_preset(Control.PRESET_TOP_RIGHT)
-# 	_score_label.position = Vector2(-label_width - 10, 5)
-# 	_score_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-# 	add_child(_score_label)  
-# 	_update_score_label()
-
-# func _update_score_label():
-# 	if _score_label:
-# 		_score_label.text = "Score: %d" % score
 func _build_pieces(processed_image: Image) -> void:
 	_clear_board()
 
@@ -234,20 +219,15 @@ func _on_piece_dropped(piece: PuzzlePiece) -> void:
 		piece.snap_to(target)
 
 		if not piece.is_locked:
-
 			piece.is_locked = true
 
 			# Fade out the ghost under this piece
 			if piece.correct_index < _ghost_nodes.size():
 				var ghost: TextureRect = _ghost_nodes[piece.correct_index]
-
 				var ghost_tween := create_tween()
-				ghost_tween.tween_property(
-					ghost,
-					"modulate:a",
-					0.0,
-					0.2
-				)
+				ghost_tween.tween_property(ghost, "modulate:a", 0.0, 0.2)
+
+			_spawn_snap_particle(target + Vector2(piece.piece_size, piece.piece_size) / 2.0)
 
 			# Small pop animation
 			piece.scale = Vector2(1.1, 1.1)
@@ -267,7 +247,7 @@ func _on_piece_dropped(piece: PuzzlePiece) -> void:
 			if ui:
 				ui.spawn_score_popup(target, points_per_piece)
 
-			#Add time bonus for placing correct pieces
+			# Add time bonus for placing correct pieces
 			if _timer_active:
 				_time_remaining += time_bonus_per_piece
 				if ui:
@@ -275,23 +255,27 @@ func _on_piece_dropped(piece: PuzzlePiece) -> void:
 			if pieces_correct >= total_pieces:
 				puzzle_solved.emit()
 
-#Popup points
-# func _spawn_score_popup(at_position: Vector2, points: int):
-# 	var popup := Label.new()
-# 	popup.text = "+%d" % points
-# 	popup.add_theme_font_size_override("font_size", 24)
-# 	popup.add_theme_color_override("font_color", Color.BLACK)
-# 	popup.add_theme_color_override("font_outline_color", Color.WHITE)
-# 	popup.add_theme_constant_override("outline_size", 4)
-# 	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
-# 	popup.position = at_position
-# 	add_child(popup)
+func _spawn_snap_particle(at_position: Vector2) -> void:
+	if snap_particle_scene == null:
+		push_warning("snap_particle_scene not assigned — skipping particle spawn")
+		return
 
-# 	var popup_tween := create_tween()
-# 	popup_tween.set_parallel(true)
-# 	popup_tween.tween_property(popup, "position:y", at_position.y - 40, 0.6)
-# 	popup_tween.tween_property(popup, "modulate:a", 0.0, 0.6).set_delay(0.15)
-# 	popup_tween.chain().tween_callback(popup.queue_free)
+	var particles := snap_particle_scene.instantiate() as CPUParticles2D
+	if particles == null:
+		push_warning("snap_particle_scene is not a CPUParticles2D!")
+		return
+
+	add_child(particles)
+	particles.position = at_position   # local position, since particles is now a child of this Control
+
+	particles.restart()
+	particles.emitting = true
+
+	print("particle spawned at local: ", particles.position, " global: ", particles.global_position)
+
+	get_tree().create_timer(particles.lifetime + .5).timeout.connect(
+		particles.queue_free
+	)
 
 func _clear_board() -> void:
 	for piece in pieces:

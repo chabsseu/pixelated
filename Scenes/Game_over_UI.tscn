@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dvya358bh5bj"]
+
+[ext_resource type="Script" uid="uid://brmeyr8tku0s2" path="res://Scripts/game_over_ui.gd" id="1_7j8qc"]
+[ext_resource type="FontFile" uid="uid://col86otrh2jac" path="res://Minecraft.ttf" id="1_8ceg6"]
+[ext_resource type="Texture2D" uid="uid://lhmnrdygye2" path="res://Assets/UI/Buttons/New game/new_game.png" id="2_whylw"]
+[ext_resource type="Texture2D" uid="uid://hyvj5s2ejrhy" path="res://Assets/UI/Buttons/New game/new_game_press.png" id="3_qwjd5"]
+[ext_resource type="Texture2D" uid="uid://chqah4kqfqqax" path="res://Assets/UI/Buttons/New game/new_game_hover.png" id="4_f4lsd"]
+[ext_resource type="Texture2D" uid="uid://47hbend4l12e" path="res://Assets/UI/Buttons/Quit Button/quit_button.png" id="5_f4lsd"]
+[ext_resource type="Texture2D" uid="uid://bcfbhdm44sb4x" path="res://Assets/UI/Buttons/Quit Button/quit_button_press.png" id="6_7j8qc"]
+[ext_resource type="Texture2D" uid="uid://dwk11mfd128gb" path="res://Assets/UI/Buttons/Quit Button/quit_button_hover.png" id="7_mbv8d"]
+
+[node name="Control" type="Control" unique_id=1746772666]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7j8qc")
+
+[node name="Panel" type="Panel" parent="." unique_id=34561457]
+layout_mode = 0
+offset_left = 368.0
+offset_top = 26.0
+offset_right = 793.0
+offset_bottom = 621.0
+
+[node name="Win_Lose_label" type="Label" parent="." unique_id=2019413037]
+layout_mode = 0
+offset_left = 494.0
+offset_top = 125.0
+offset_right = 647.0
+offset_bottom = 161.0
+theme_override_fonts/font = ExtResource("1_8ceg6")
+theme_override_font_sizes/font_size = 36
+
+[node name="NewGameButton" type="TextureButton" parent="." unique_id=186884219]
+layout_mode = 0
+offset_left = 504.0
+offset_top = 282.0
+offset_right = 639.0
+offset_bottom = 322.0
+texture_normal = ExtResource("2_whylw")
+texture_pressed = ExtResource("3_qwjd5")
+texture_hover = ExtResource("4_f4lsd")
+stretch_mode = 0
+
+[node name="QuitButton" type="TextureButton" parent="." unique_id=1929710474]
+layout_mode = 0
+offset_left = 505.0
+offset_top = 338.0
+offset_right = 638.0
+offset_bottom = 377.0
+texture_normal = ExtResource("5_f4lsd")
+texture_pressed = ExtResource("6_7j8qc")
+texture_hover = ExtResource("7_mbv8d")
+stretch_mode = 0
+
+[connection signal="pressed" from="NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="QuitButton" to="." method="_on_quit_button_pressed"]

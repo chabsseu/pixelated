@@ -2,6 +2,8 @@ extends Control
 
 const GAME_SCENE: PackedScene = preload("res://Scenes/game.tscn")
 
+@export var click_particle_scene: PackedScene
+
 @onready var upload_button: TextureButton = $Panel/UploadButton
 @onready var start_button: TextureButton = $Panel/StartButton
 @onready var option_button: OptionButton = $Panel/OptionButton
@@ -40,11 +42,12 @@ func _ready():
 
 
 func _on_upload_pressed():
+	_spawn_click_particle()
+	await get_tree().create_timer(0.15).timeout
 	file_dialog.popup_centered_ratio()
-
+	
 
 func _on_file_selected(path: String):
-
 	image_path = path
 
 	selected_image.text = path.get_file()
@@ -52,7 +55,7 @@ func _on_file_selected(path: String):
 	start_button.disabled = false
 
 func _on_start_pressed():
-
+	_spawn_click_particle()
 	if image_path.is_empty():
 		return
 
@@ -69,3 +72,24 @@ func _on_start_pressed():
 	get_tree().current_scene = game
 
 	queue_free()
+
+
+func _spawn_click_particle() -> void:
+	if click_particle_scene == null:
+		push_warning("click_particle_scene not assigned — skipping particle spawn")
+		return
+
+	var particles := click_particle_scene.instantiate() as CPUParticles2D
+	if particles == null:
+		push_warning("click_particle_scene is not a CPUParticles2D!")
+		return
+
+	get_tree().current_scene.add_child(particles)
+	particles.global_position = get_viewport().get_mouse_position()
+
+	particles.restart()
+	particles.emitting = true
+
+	get_tree().create_timer(particles.lifetime + 0.2).timeout.connect(
+		particles.queue_free
+	)

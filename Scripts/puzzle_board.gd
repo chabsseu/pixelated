@@ -7,11 +7,11 @@ class_name PuzzleBoard
 @export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
 @export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
-@export var time_limit_seconds: float = 60.0
+@export var time_limit_seconds: float = 5.0
 @export var time_bonus_per_piece: float = 1.0
 @export var points_per_piece: int = 5
 @export var ui: PuzzleUI
-@export var message: MessageUI
+# @export var message: MessageUI
 @export var snap_particle_scene: PackedScene
 
 var pieces: Array = []
@@ -50,8 +50,8 @@ func _process(delta: float) -> void:
 
 func _on_puzzle_solved() -> void:
 	_timer_active = false
-	if message:
-		message.show_message("PUZZLE COMPLETE!")
+	# if message:
+	# 	message.show_message("PUZZLE COMPLETE!")
 
 func start_puzzle(image_path: String) -> void:
 	score = 0
@@ -177,8 +177,8 @@ func _on_time_up() -> void:
 	for piece in pieces:
 		piece.lock_input()
 
-	if message:
-		message.show_message("TIME'S UP!")
+	# if message:
+	# 	message.show_message("TIME'S UP!")
 
 	time_up.emit()
 
@@ -309,3 +309,4 @@ func _draw() -> void:
 			grid_color,
 			2.0
 		)
+

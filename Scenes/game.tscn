@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://iwa7rcwlrueu" path="res://Scenes/Board/snap_particle.tscn" id="5_v158k"]
 [ext_resource type="PackedScene" uid="uid://b3438hwtyfdwu" path="res://Scenes/message.tscn" id="5_wowpa"]
 [ext_resource type="AudioStream" uid="uid://b5s5r837dpk5c" path="res://Assets/Background Music/Piki - Fancy Park (freetouse.com).mp3" id="7_1l0tm"]
+[ext_resource type="PackedScene" uid="uid://dvya358bh5bj" path="res://Scenes/Game_over_UI.tscn" id="8_h4fw4"]
 
 [node name="Game" type="Node2D" unique_id=1535298601]
 script = ExtResource("1_i6g32")
@@ -56,6 +57,10 @@ anchor_bottom = 0.0
 grow_vertical = 1
 
 [node name="Message" parent="CanvasLayer" unique_id=1466435013 instance=ExtResource("5_wowpa")]
+
+[node name="Control" parent="CanvasLayer" unique_id=1746772666 instance=ExtResource("8_h4fw4")]
+offset_right = 18.0
+offset_bottom = 11.0
 
 [node name="Bg_music" type="AudioStreamPlayer2D" parent="." unique_id=1335121854]
 stream = ExtResource("7_1l0tm")

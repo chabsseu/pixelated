@@ -11,7 +11,7 @@ class_name PuzzleBoard
 @export var time_bonus_per_piece: float = 1.0
 @export var points_per_piece: int = 5
 @export var ui: PuzzleUI
-# @export var message: MessageUI
+@export var message: MessageUI
 @export var snap_particle_scene: PackedScene
 
 var pieces: Array = []
@@ -309,4 +309,3 @@ func _draw() -> void:
 			grid_color,
 			2.0
 		)
-

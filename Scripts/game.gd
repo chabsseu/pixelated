@@ -14,7 +14,7 @@ func _ready():
 
 	await transition.fade_in()
 	bg_music.finished.connect(_on_music_finished)
-	bg_music.play()
+	_fade_music_in() 
 
 	puzzle_board.grid_columns = grid_size
 	puzzle_board.puzzle_solved.connect(_on_puzzle_solved)
@@ -34,3 +34,15 @@ func _on_puzzle_solved():
 func _on_time_up():
 	game_over_ui.set_result(false)
 	game_over_ui.visible = true
+
+func _fade_music_out(duration: float = 0.6) -> void:
+	var tween := create_tween()
+	tween.tween_property(bg_music, "volume_db", -40.0, duration)
+	await tween.finished
+	bg_music.stop()
+
+func _fade_music_in(duration: float = 0.6) -> void:
+	bg_music.volume_db = -40.0
+	bg_music.play()
+	var tween := create_tween()
+	tween.tween_property(bg_music, "volume_db", 0.0, duration)

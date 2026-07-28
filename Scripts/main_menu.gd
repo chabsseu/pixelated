@@ -3,7 +3,7 @@ extends Control
 const GAME_SCENE: PackedScene = preload("res://Scenes/game.tscn")
 
 @export var click_particle_scene: PackedScene
-
+@onready var bg_music: AudioStreamPlayer2D = $bg_music
 @onready var upload_button: TextureButton = $Panel/UploadButton
 @onready var start_button: TextureButton = $Panel/StartButton
 @onready var option_button: OptionButton = $Panel/OptionButton
@@ -40,6 +40,8 @@ func _ready():
 	file_dialog.file_selected.connect(_on_file_selected)
 	start_button.pressed.connect(_on_start_pressed)
 
+	bg_music.finished.connect(_on_music_finished)
+	_fade_music_in()
 
 func _on_upload_pressed():
 	_spawn_click_particle()
@@ -58,6 +60,8 @@ func _on_start_pressed():
 	_spawn_click_particle()
 	if image_path.is_empty():
 		return
+	
+	await _fade_music_out()
 
 	var transition = preload("res://Scenes/transition.tscn").instantiate()
 	add_child(transition)
@@ -93,3 +97,18 @@ func _spawn_click_particle() -> void:
 	get_tree().create_timer(particles.lifetime + 0.2).timeout.connect(
 		particles.queue_free
 	)
+
+func _on_music_finished():
+	bg_music.play()
+
+func _fade_music_out(duration: float = 0.6) -> void:
+	var tween := create_tween()
+	tween.tween_property(bg_music, "volume_db", -40.0, duration)
+	await tween.finished
+	bg_music.stop()
+
+func _fade_music_in(duration: float = 0.6) -> void:
+	bg_music.volume_db = -40.0
+	bg_music.play()
+	var tween := create_tween()
+	tween.tween_property(bg_music, "volume_db", 0.0, duration)

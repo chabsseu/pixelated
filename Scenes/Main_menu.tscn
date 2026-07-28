@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://b6q1l8nhhpwnp" path="res://Assets/UI/Buttons/Start button/start_button_hover.png" id="4_ihofj"]
 [ext_resource type="Texture2D" uid="uid://bahkjeitnc1fn" path="res://Assets/UI/Buttons/upload_button_hover.png" id="4_yst1x"]
 [ext_resource type="Texture2D" uid="uid://bska685mkt81h" path="res://Assets/UI/Buttons/Start button/start_button_disable.png" id="5_ihofj"]
+[ext_resource type="AudioStream" uid="uid://deg3vidy41u6e" path="res://Assets/Background Music/massobeats - peach prosecco (freetouse.com).mp3" id="12_q0gj4"]
 
 [node name="Control" type="Control" unique_id=75564955]
 layout_mode = 3
@@ -103,3 +104,7 @@ theme_override_font_sizes/font_size = 20
 text = "Choose Board Size"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="bg_music" type="AudioStreamPlayer2D" parent="." unique_id=1392649569]
+stream = ExtResource("12_q0gj4")
+volume_db = -20.91

@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://b3438hwtyfdwu" path="res://Scenes/message.tscn" id="5_wowpa"]
 [ext_resource type="AudioStream" uid="uid://b5s5r837dpk5c" path="res://Assets/Background Music/Piki - Fancy Park (freetouse.com).mp3" id="7_1l0tm"]
 [ext_resource type="PackedScene" uid="uid://dvya358bh5bj" path="res://Scenes/Game_over_UI.tscn" id="8_h4fw4"]
+[ext_resource type="AudioStream" uid="uid://cbb6stuhgfa3a" path="res://Assets/SFX/pop sound.mp3" id="10_ldgsr"]
 
 [node name="Game" type="Node2D" unique_id=1535298601]
 script = ExtResource("1_i6g32")
@@ -48,6 +49,10 @@ board_size = Vector2(600, 600)
 ui = NodePath("../CanvasLayer/UI")
 message = NodePath("../CanvasLayer/Message")
 snap_particle_scene = ExtResource("5_v158k")
+
+[node name="pop" type="AudioStreamPlayer2D" parent="PuzzleBoard" unique_id=1656111376]
+position = Vector2(326, -33.5)
+stream = ExtResource("10_ldgsr")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1031421463]
 

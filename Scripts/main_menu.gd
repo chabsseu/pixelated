@@ -4,6 +4,7 @@ const GAME_SCENE: PackedScene = preload("res://Scenes/game.tscn")
 
 @export var click_particle_scene: PackedScene
 @onready var bg_music: AudioStreamPlayer2D = $bg_music
+@onready var mouse_click: AudioStreamPlayer2D = $mouse_click
 @onready var upload_button: TextureButton = $Panel/UploadButton
 @onready var start_button: TextureButton = $Panel/StartButton
 @onready var option_button: OptionButton = $Panel/OptionButton
@@ -45,6 +46,7 @@ func _ready():
 
 func _on_upload_pressed():
 	_spawn_click_particle()
+	mouse_click.play()
 	await get_tree().create_timer(0.15).timeout
 	file_dialog.popup_centered_ratio()
 	
@@ -58,6 +60,7 @@ func _on_file_selected(path: String):
 
 func _on_start_pressed():
 	_spawn_click_particle()
+	mouse_click.play()
 	if image_path.is_empty():
 		return
 	

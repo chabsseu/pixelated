@@ -4,13 +4,14 @@ const game_screen: PackedScene = preload("res://Scenes/Main_menu.tscn")
 
 @export var click_particle_scene: PackedScene   # assign a CPUParticles2D scene here
 @onready var bg_music: AudioStreamPlayer2D = $bg_music
-
+@onready var mouse_click: AudioStreamPlayer2D = $mouse_click
 func _ready() -> void:
 	bg_music.finished.connect(_on_music_finished)
 	_fade_music_in()
 
 func _on_texture_button_pressed() -> void:
 	_spawn_click_particle()
+	mouse_click.play()
 	await _fade_music_out()
 
 	var transition = preload("res://Scenes/transition.tscn").instantiate()

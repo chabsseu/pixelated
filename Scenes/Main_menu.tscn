@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://bahkjeitnc1fn" path="res://Assets/UI/Buttons/upload_button_hover.png" id="4_yst1x"]
 [ext_resource type="Texture2D" uid="uid://bska685mkt81h" path="res://Assets/UI/Buttons/Start button/start_button_disable.png" id="5_ihofj"]
 [ext_resource type="AudioStream" uid="uid://deg3vidy41u6e" path="res://Assets/Background Music/massobeats - peach prosecco (freetouse.com).mp3" id="12_q0gj4"]
+[ext_resource type="AudioStream" uid="uid://dh3qb5wsq5mik" path="res://Assets/SFX/mouse_click.mp3" id="13_f8d3k"]
 
 [node name="Control" type="Control" unique_id=75564955]
 layout_mode = 3
@@ -107,4 +108,7 @@ vertical_alignment = 1
 
 [node name="bg_music" type="AudioStreamPlayer2D" parent="." unique_id=1392649569]
 stream = ExtResource("12_q0gj4")
-volume_db = -20.91
+volume_db = -40.0
+
+[node name="mouse_click" type="AudioStreamPlayer2D" parent="." unique_id=450308750]
+stream = ExtResource("13_f8d3k")

@@ -67,12 +67,18 @@ func _fade_music_in(duration: float = 0.6) -> void:
 	tween.tween_property(bg_music, "volume_db", 0.0, duration)
 
 func _on_plug_pressed() -> void:
+	mouse_click.play()
+	_spawn_click_particle()
 	OS.shell_open(YOUTUBE_URL)
 
 
 func _on_plug_2_pressed() -> void:
+	mouse_click.play()
+	_spawn_click_particle()
 	OS.shell_open(FB_URL)
 
 
 func _on_plug_3_pressed() -> void:
+	mouse_click.play()
+	_spawn_click_particle()
 	OS.shell_open(ITCH_URL)

@@ -18,7 +18,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _ready():
 	game_over_ui.visible = false
 
-	var transition = preload("res://Scenes/transition.tscn").instantiate()
+	var transition = preload("res://Scenes/Transition.tscn").instantiate()
 	add_child(transition)
 
 	await transition.fade_in()

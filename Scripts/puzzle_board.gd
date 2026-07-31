@@ -3,7 +3,7 @@ class_name PuzzleBoard
 
 @export var piece_scene: PackedScene       # assign PuzzlePiece.tscn in the editor
 @export var grid_columns: int = 2
-@export var board_size: Vector2 = Vector2(600, 600)
+@export var board_size: Vector2 = Vector2(900, 900)
 @export var pixelate_grid_size := 6   # lower = chunkier/harder pixelation
 @export var color_levels := 64     # lower = flatter "cartoon" palette, 255 = off
 @export var snap_threshold_ratio: float = 0.6   # % of piece size counted as "close enough" to snap
@@ -16,14 +16,15 @@ class_name PuzzleBoard
 
 @onready var pop: AudioStreamPlayer2D = $pop
 
-var pieces: Array = []
+var pieces: Array[PuzzlePiece] = []
 var slot_positions: Array = []
 var pieces_correct: int = 0
 var total_pieces: int = 0
-var _ghost_nodes: Array = []
+var _ghost_nodes: Array[TextureRect] = []
 var _time_remaining: float = 0.0
 var _timer_active: bool = false
 var score: int = 0
+var grid_rows: int
 
 
 signal puzzle_solved
@@ -85,11 +86,12 @@ func start_puzzle(image_path: String) -> void:
 	_build_pieces(processed)
 
 func _build_pieces(processed_image: Image) -> void:
+	grid_rows = grid_columns
 	_clear_board()
 
 	var full_tex := PixelateUtil.to_texture(processed_image)
-	var piece_px := board_size.x / float(grid_columns)
-	total_pieces = grid_columns * grid_columns
+	var piece_px := board_size.x / float(grid_columns)   # square pieces — keep grid_columns == grid_rows for now
+	total_pieces = grid_columns * grid_rows
 	pieces_correct = 0
 
 	var img_w := processed_image.get_width()
@@ -100,7 +102,7 @@ func _build_pieces(processed_image: Image) -> void:
 
 	# Create the correct slot positions
 	slot_positions.clear()
-	for row in range(grid_columns):
+	for row in range(grid_rows):
 		for col in range(grid_columns):
 			slot_positions.append(
 				board_offset + Vector2(col * piece_px, row * piece_px)
@@ -134,7 +136,7 @@ func _build_pieces(processed_image: Image) -> void:
 
 	# Create puzzle pieces
 	var index := 0
-	for row in range(grid_columns):
+	for row in range(grid_rows):
 		for col in range(grid_columns):
 			var piece: PuzzlePiece = piece_scene.instantiate()
 			add_child(piece)
@@ -187,15 +189,20 @@ func _on_time_up() -> void:
 func _shuffle_pieces() -> void:
 	var margin := 15.0
 	var board_offset := (size - board_size) / 2.0
+	var piece_px := board_size.x / float(grid_columns)
 
 	var tray := []
 
-	for row in range(grid_columns):
+	# Scatter pieces to the RIGHT of the board instead of below it —
+	# uses the empty space in a landscape layout instead of wasting it.
+	var tray_start_x := board_offset.x + board_size.x + 40
+
+	for row in range(grid_rows):
 		for col in range(grid_columns):
 			tray.append(
 				Vector2(
-					board_offset.x + col * (board_size.x / grid_columns + margin),
-					board_offset.y + board_size.y + 40 + row * (board_size.y / grid_columns + margin)
+					tray_start_x + col * (piece_px + margin),
+					board_offset.y + row * (piece_px + margin)
 				)
 			)
 

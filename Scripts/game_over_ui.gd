@@ -10,7 +10,7 @@ func set_result(did_win: bool) -> void:
 
 func _on_new_game_button_pressed() -> void:
 	mouse_click.play()
-	var transition = preload("res://Scenes/transition.tscn").instantiate()
+	var transition = preload("res://Scenes/Transition.tscn").instantiate()
 	add_child(transition)
 	await transition.fade_out()
 

@@ -66,7 +66,7 @@ func _on_start_pressed():
 	
 	await _fade_music_out()
 
-	var transition = preload("res://Scenes/transition.tscn").instantiate()
+	var transition = preload("res://Scenes/Transition.tscn").instantiate()
 	add_child(transition)
 	await transition.fade_out()
 	

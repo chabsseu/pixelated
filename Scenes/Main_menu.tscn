@@ -27,16 +27,18 @@ click_particle_scene = ExtResource("2_q0gj4")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1624812951]
 layout_mode = 0
-offset_right = 1161.0
-offset_bottom = 650.0
+offset_left = -60.0
+offset_top = -41.0
+offset_right = 1306.0
+offset_bottom = 752.0
 texture = ExtResource("2_72l6q")
 
 [node name="Panel" type="Panel" parent="." unique_id=1317047819]
 layout_mode = 0
-offset_left = 396.0
-offset_top = 32.0
-offset_right = 824.0
-offset_bottom = 593.0
+offset_left = 415.0
+offset_top = 77.0
+offset_right = 843.0
+offset_bottom = 638.0
 
 [node name="Title" type="Label" parent="Panel" unique_id=963750738]
 layout_mode = 0

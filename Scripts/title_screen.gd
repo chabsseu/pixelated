@@ -1,11 +1,16 @@
 extends Node2D
 
 const game_screen: PackedScene = preload("res://Scenes/Main_menu.tscn")
+const YOUTUBE_URL := "https://www.youtube.com/@StrawberrySoftoware"
+const FB_URL := "https://www.facebook.com"
+const ITCH_URL := "https://liufyx.itch.io/"
 
 @export var click_particle_scene: PackedScene   # assign a CPUParticles2D scene here
 @onready var bg_music: AudioStreamPlayer2D = $bg_music
 @onready var mouse_click: AudioStreamPlayer2D = $mouse_click
+
 func _ready() -> void:
+	
 	bg_music.finished.connect(_on_music_finished)
 	_fade_music_in()
 
@@ -14,7 +19,7 @@ func _on_texture_button_pressed() -> void:
 	mouse_click.play()
 	await _fade_music_out()
 
-	var transition = preload("res://Scenes/transition.tscn").instantiate()
+	var transition = preload("res://Scenes/Transition.tscn").instantiate()
 	add_child(transition)
 	await transition.fade_out()
 
@@ -60,3 +65,14 @@ func _fade_music_in(duration: float = 0.6) -> void:
 	bg_music.play()
 	var tween := create_tween()
 	tween.tween_property(bg_music, "volume_db", 0.0, duration)
+
+func _on_plug_pressed() -> void:
+	OS.shell_open(YOUTUBE_URL)
+
+
+func _on_plug_2_pressed() -> void:
+	OS.shell_open(FB_URL)
+
+
+func _on_plug_3_pressed() -> void:
+	OS.shell_open(ITCH_URL)

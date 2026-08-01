@@ -13,6 +13,18 @@ static func load_image_from_path(path: String) -> Image:
 	img.convert(Image.FORMAT_RGB8)
 	return img
 
+static func load_image_from_bytes(bytes: PackedByteArray) -> Image:
+	# For Android/web builds — no real file path, just raw image bytes.
+	var img := Image.new()
+	var err := img.load_jpg_from_buffer(bytes)
+	if err != OK:
+		err = img.load_png_from_buffer(bytes)
+	if err != OK:
+		push_error("Failed to decode image bytes (error %d)" % err)
+		return null
+	img.convert(Image.FORMAT_RGB8)
+	return img
+
 
 static func pixelate(source: Image, pixel_size: int, color_levels: int = 32) -> Image:
 	var img := crop_to_square(source)

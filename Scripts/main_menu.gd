@@ -11,34 +11,49 @@ const GAME_SCENE: PackedScene = preload("res://Scenes/game.tscn")
 @onready var file_dialog: FileDialog = $Panel/FileDialog
 @onready var selected_image: Label = $Panel/SelectedImageLabel
 
-var image_path := ""
+var image_path := ""                                   # desktop
+var _android_image_bytes: PackedByteArray = PackedByteArray()   # android
+var _is_android: bool = false
+
+var _android_plugin  # GodotGetImage singleton, if present
 
 func _ready():
+	_is_android = Engine.has_singleton("GodotGetImage")
 
-	# Disable Start until an image is chosen
 	start_button.disabled = true
 
-	# Puzzle sizes
 	option_button.clear()
 	option_button.add_item("2 x 2", 2)
 	option_button.add_item("3 x 3", 3)
 	option_button.add_item("4 x 4", 4)
 	option_button.add_item("5 x 5", 5)
 	option_button.add_item("6 x 6", 6)
-
 	option_button.select(1)
 
-	# File dialog
-	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
-	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
-	file_dialog.filters = PackedStringArray([
-		"*.png ; PNG Image",
-		"*.jpg ; JPG Image",
-		"*.jpeg ; JPEG Image"
-	])
+	if _is_android:
+		_android_plugin = Engine.get_singleton("GodotGetImage")
+		_android_plugin.connect("image_request_completed", _on_android_image_received)
+		_android_plugin.connect("error", _on_android_plugin_error)
+		# Optional: cap resolution so huge phone photos don't blow up memory/pixelation math
+		_android_plugin.setOptions({
+			"image_width": 1600,
+			"image_height": 1600,
+			"keep_aspect": true,
+			"auto_rotate_image": true,
+			"image_format": "jpg"
+		})
+	else:
+		# Desktop file dialog — unchanged from before
+		file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+		file_dialog.access = FileDialog.ACCESS_FILESYSTEM
+		file_dialog.filters = PackedStringArray([
+			"*.png ; PNG Image",
+			"*.jpg ; JPG Image",
+			"*.jpeg ; JPEG Image"
+		])
+		file_dialog.file_selected.connect(_on_file_selected)
 
 	upload_button.pressed.connect(_on_upload_pressed)
-	file_dialog.file_selected.connect(_on_file_selected)
 	start_button.pressed.connect(_on_start_pressed)
 
 	bg_music.finished.connect(_on_music_finished)
@@ -48,38 +63,59 @@ func _on_upload_pressed():
 	_spawn_click_particle()
 	mouse_click.play()
 	await get_tree().create_timer(0.15).timeout
-	file_dialog.popup_centered_ratio()
-	
+
+	if _is_android:
+		_android_plugin.getGalleryImage()
+	else:
+		file_dialog.popup_centered_ratio()
 
 func _on_file_selected(path: String):
+	# Desktop path only
 	image_path = path
-
 	selected_image.text = path.get_file()
-
 	start_button.disabled = false
+
+func _on_android_image_received(images: Dictionary) -> void:
+	# A single pick returns one entry — grab the first (only) buffer.
+	for buffer in images.values():
+		_android_image_bytes = buffer
+		selected_image.text = "Photo selected"
+		start_button.disabled = false
+		break
+
+func _on_android_plugin_error(err: String) -> void:
+	push_warning("GodotGetImage plugin error: " + err)
 
 func _on_start_pressed():
 	_spawn_click_particle()
 	mouse_click.play()
-	if image_path.is_empty():
-		return
-	
+
+	if _is_android:
+		if _android_image_bytes.is_empty():
+			return
+	else:
+		if image_path.is_empty():
+			return
+
 	await _fade_music_out()
 
 	var transition = preload("res://Scenes/Transition.tscn").instantiate()
 	add_child(transition)
 	await transition.fade_out()
-	
+
 	var game = GAME_SCENE.instantiate()
 
-	game.image_path = image_path
+	if _is_android:
+		game.image_bytes = _android_image_bytes
+	else:
+		game.image_path = image_path
+
 	game.grid_size = option_button.get_selected_id()
 
 	get_tree().root.add_child(game)
 	get_tree().current_scene = game
 
 	queue_free()
-
 
 func _spawn_click_particle() -> void:
 	if click_particle_scene == null:
@@ -93,7 +129,6 @@ func _spawn_click_particle() -> void:
 
 	get_tree().current_scene.add_child(particles)
 	particles.global_position = get_viewport().get_mouse_position()
-
 	particles.restart()
 	particles.emitting = true
 

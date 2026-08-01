@@ -2,7 +2,7 @@ extends Node2D
 
 const game_screen: PackedScene = preload("res://Scenes/Main_menu.tscn")
 const YOUTUBE_URL := "https://www.youtube.com/@StrawberrySoftoware"
-const FB_URL := "https://www.facebook.com"
+const FB_URL := "https://www.facebook.com/profile.php?id=61584113526649"
 const ITCH_URL := "https://liufyx.itch.io/"
 
 @export var click_particle_scene: PackedScene   # assign a CPUParticles2D scene here

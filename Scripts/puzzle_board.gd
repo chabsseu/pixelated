@@ -57,13 +57,20 @@ func _on_puzzle_solved() -> void:
 	# 	message.show_message("PUZZLE COMPLETE!")
 
 func start_puzzle(image_path: String) -> void:
+	var raw_img := PixelateUtil.load_image_from_path(image_path)
+	_start_puzzle_with_image(raw_img)
+
+func start_puzzle_from_bytes(bytes: PackedByteArray) -> void:
+	var raw_img := PixelateUtil.load_image_from_bytes(bytes)
+	_start_puzzle_with_image(raw_img)
+
+func _start_puzzle_with_image(raw_img: Image) -> void:
 	score = 0
 	pieces_correct = 0
 
 	if ui:
 		ui.set_score(0)
-		
-	var raw_img := PixelateUtil.load_image_from_path(image_path)
+
 	if raw_img == null:
 		return
 

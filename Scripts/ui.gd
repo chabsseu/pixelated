@@ -1,9 +1,12 @@
 extends Control
 class_name PuzzleUI
 
+signal pause_requested
+
 @onready var timer_label: Label = $TimerLabel
 @onready var score_label: Label = $ScoreLabel
 @onready var popup_layer: Control = $PopupLayer
+
 
 func set_time(seconds: float):
 	timer_label.text = "Time: %d" % max(0, ceil(seconds))
@@ -50,3 +53,6 @@ func spawn_score_popup(pos: Vector2, points: int):
 	tween.chain().tween_callback(
 		popup.queue_free
 	)
+
+func _on_pause_pressed():
+	pause_requested.emit()

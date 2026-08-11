@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://bm15o7fhqfixb"]
+
+[ext_resource type="Texture2D" uid="uid://1madyepur20l" path="res://Assets/game_bg.jpg" id="1_m04yc"]
+[ext_resource type="Script" uid="uid://cdevlvjgfrbd0" path="res://Scripts/play_select.gd" id="1_x840p"]
+[ext_resource type="Texture2D" uid="uid://bcl8jrktrp7fn" path="res://Assets/UI/Buttons/classic/classic.png" id="2_hwopb"]
+[ext_resource type="PackedScene" uid="uid://iwa7rcwlrueu" path="res://Scenes/Board/snap_particle.tscn" id="2_j8gsu"]
+[ext_resource type="Texture2D" uid="uid://b18fox1p4yobd" path="res://Assets/UI/Buttons/classic/classic_press.png" id="3_uahj3"]
+[ext_resource type="Texture2D" uid="uid://b2x7hq64gc1lj" path="res://Assets/UI/Buttons/classic/classic_hover.png" id="4_x6ot0"]
+[ext_resource type="Texture2D" uid="uid://pvxgs2lxrk2j" path="res://Assets/UI/Buttons/adventure/adventure.png" id="5_pq8gp"]
+[ext_resource type="Texture2D" uid="uid://bn1eg4sn0r1q8" path="res://Assets/UI/Buttons/adventure/adventure_press.png" id="6_fo785"]
+[ext_resource type="Texture2D" uid="uid://csvdnwprn14l4" path="res://Assets/UI/Buttons/adventure/adventure_hover.png" id="7_yrvgj"]
+[ext_resource type="AudioStream" uid="uid://deg3vidy41u6e" path="res://Assets/Background Music/massobeats - peach prosecco (freetouse.com).mp3" id="10_atnq1"]
+[ext_resource type="AudioStream" uid="uid://dh3qb5wsq5mik" path="res://Assets/SFX/mouse_click.mp3" id="11_dnd0x"]
+
+[node name="PlaySelect" type="Node2D" unique_id=2142828396]
+script = ExtResource("1_x840p")
+click_particle_scene = ExtResource("2_j8gsu")
+
+[node name="Background" type="TextureRect" parent="." unique_id=1509817619]
+offset_left = 2.0
+offset_top = 7.0
+offset_right = 1282.0
+offset_bottom = 721.0
+texture = ExtResource("1_m04yc")
+
+[node name="ClassicButton" type="TextureButton" parent="." unique_id=1000464987]
+offset_left = 549.0
+offset_top = 277.0
+offset_right = 760.0
+offset_bottom = 335.0
+texture_normal = ExtResource("2_hwopb")
+texture_pressed = ExtResource("3_uahj3")
+texture_hover = ExtResource("4_x6ot0")
+stretch_mode = 0
+
+[node name="AdventureButton" type="TextureButton" parent="." unique_id=1940574639]
+offset_left = 549.0
+offset_top = 357.0
+offset_right = 759.0
+offset_bottom = 417.0
+texture_normal = ExtResource("5_pq8gp")
+texture_pressed = ExtResource("6_fo785")
+texture_hover = ExtResource("7_yrvgj")
+stretch_mode = 0
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1515798357]
+position = Vector2(641, 365)
+
+[node name="bg_music" type="AudioStreamPlayer2D" parent="." unique_id=315335992]
+stream = ExtResource("10_atnq1")
+volume_db = -40.0
+
+[node name="mouse_click" type="AudioStreamPlayer2D" parent="." unique_id=684101877]
+stream = ExtResource("11_dnd0x")
+
+[connection signal="pressed" from="ClassicButton" to="." method="_on_classic_button_pressed"]

@@ -1,6 +1,6 @@
 extends Node2D
 
-const game_screen: PackedScene = preload("res://Scenes/Main_menu.tscn")
+const game_screen: PackedScene = preload("res://Scenes/play_select.tscn")
 const YOUTUBE_URL := "https://www.youtube.com/@StrawberrySoftoware"
 const FB_URL := "https://www.facebook.com/profile.php?id=61584113526649"
 const ITCH_URL := "https://liufyx.itch.io/"

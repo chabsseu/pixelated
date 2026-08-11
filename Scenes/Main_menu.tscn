@@ -27,10 +27,10 @@ click_particle_scene = ExtResource("2_q0gj4")
 
 [node name="Background" type="TextureRect" parent="." unique_id=1624812951]
 layout_mode = 0
-offset_left = -60.0
-offset_top = -41.0
-offset_right = 1306.0
-offset_bottom = 752.0
+offset_left = -135.0
+offset_top = -90.0
+offset_right = 1381.0
+offset_bottom = 801.0
 texture = ExtResource("2_72l6q")
 
 [node name="Panel" type="Panel" parent="." unique_id=1317047819]
@@ -114,3 +114,6 @@ volume_db = -40.0
 
 [node name="mouse_click" type="AudioStreamPlayer2D" parent="." unique_id=450308750]
 stream = ExtResource("13_f8d3k")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=483958550]
+position = Vector2(645, 362)

@@ -33,7 +33,7 @@ offset_right = 1343.0
 offset_bottom = 756.0
 texture = ExtResource("1_12m1t")
 
-[node name="Label" type="Label" parent="." unique_id=1262377747]
+[node name="Title" type="Label" parent="." unique_id=1262377747]
 offset_left = 203.0
 offset_top = 81.0
 offset_right = 1483.0
@@ -93,7 +93,7 @@ texture_pressed = ExtResource("17_k1y01")
 texture_hover = ExtResource("18_4blwa")
 stretch_mode = 0
 
-[node name="support" type="Label" parent="." unique_id=508318845]
+[node name="Support" type="Label" parent="." unique_id=508318845]
 offset_left = 458.0
 offset_top = 494.0
 offset_right = 720.0
@@ -101,6 +101,19 @@ offset_bottom = 526.0
 theme_override_fonts/font = ExtResource("2_6vd4x")
 theme_override_font_sizes/font_size = 32
 text = "Support me here"
+
+[node name="Version" type="Label" parent="." unique_id=986174884]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = 649.0
+offset_right = -4.0
+offset_bottom = 681.0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_6vd4x")
+theme_override_font_sizes/font_size = 32
+text = "v1.0"
 
 [connection signal="pressed" from="PlayButton" to="." method="_on_texture_button_pressed"]
 [connection signal="pressed" from="Plug" to="." method="_on_plug_pressed"]
